@@ -1,0 +1,3 @@
+var a:[10][20]int
+var r:{x:int, y:int}
+fun main(i:int):int=a[r.x][r.y]+(a[i][j] where {var j:int var a:[1][2]int})

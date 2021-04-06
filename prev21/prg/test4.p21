@@ -1,0 +1,10 @@
+fun main():int = i+f(i+1)
+    where {
+        var i:int
+        fun f(i:int):int = g(f(i), f(i+1))
+        fun g(i:int, j:int):int = f(i+j)
+            where {
+                fun f(i:int):int = i+j
+            }
+    }
+
