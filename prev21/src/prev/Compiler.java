@@ -5,6 +5,7 @@ import java.util.*;
 import org.antlr.v4.runtime.*;
 
 import prev.common.report.*;
+import prev.data.mem.MemFrame;
 import prev.phase.lexan.*;
 import prev.phase.synan.*;
 import prev.phase.abstr.*;
@@ -139,9 +140,9 @@ public class Compiler {
 
 				// Semantic analysis.
 				try (SemAn seman = new SemAn()) {
-					Abstr.tree.accept(new NameResolver(), null);
-					Abstr.tree.accept(new TypeResolver(), null);
-					Abstr.tree.accept(new AddrResolver(), null);
+					Abstr.tree.accept(new NameResolver(), 0);
+					Abstr.tree.accept(new TypeResolver(), 0);
+					Abstr.tree.accept(new AddrResolver(), 0);
 					AbsLogger logger = new AbsLogger(seman.logger);
 					logger.addSubvisitor(new SemLogger(seman.logger));
 					Abstr.tree.accept(logger, "Decls");
@@ -151,7 +152,7 @@ public class Compiler {
 
 				// Memory layout.
 				try (Memory memory = new Memory()) {
-					Abstr.tree.accept(new MemEvaluator(), null);
+					Abstr.tree.accept(new MemEvaluator(), 0);
 					AbsLogger logger = new AbsLogger(memory.logger);
 					logger.addSubvisitor(new SemLogger(memory.logger));
 					logger.addSubvisitor(new MemLogger(memory.logger));
@@ -162,7 +163,8 @@ public class Compiler {
 
 				// Intermediate code generation.
 				try (ImcGen imcgen = new ImcGen()) {
-					Abstr.tree.accept(new CodeGenerator(), null);
+					Stack<MemFrame> ss = new Stack<MemFrame>();
+					Abstr.tree.accept(new CodeGenerator(), ss);
 					AbsLogger logger = new AbsLogger(imcgen.logger);
 					logger.addSubvisitor(new SemLogger(imcgen.logger));
 					logger.addSubvisitor(new MemLogger(imcgen.logger));
