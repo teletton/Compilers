@@ -51,9 +51,9 @@ public class ChunkGenerator extends AstFullVisitor<Object, Object> {
             funDecl.expr.accept(this, arg);
             ImcExpr ie = ImcGen.exprImc.get(funDecl.expr);
             //System.out.println(ie.getClass());
-            ie.accept(new StmtCan(), 0);
-            Vector<ImcStmt> vis = StmtCan.svec.peek();
-            StmtCan.svec.pop();
+            Vector<ImcStmt> vis = ie.accept(new StmtCan(), 0);
+            //Vector<ImcStmt> vis = StmtCan.svec.peek();
+            //StmtCan.svec.pop();
             MemFrame mf = Memory.frames.get(funDecl);
             MemLabel entry = new MemLabel();
             MemLabel exit = new MemLabel();
