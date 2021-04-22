@@ -26,7 +26,6 @@ public class AstExprStmt extends AstNode implements AstStmt {
 
 	@Override
 	public <Result, Arg> Result accept(AstVisitor<Result, Arg> visitor, Arg arg) {
-		//System.out.println(expr.id());
 		return visitor.visit(this, arg);
 	}
 

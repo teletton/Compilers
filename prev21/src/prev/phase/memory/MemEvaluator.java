@@ -95,7 +95,6 @@ public class MemEvaluator extends AstFullVisitor<Object, Object> {
 		ls.pop();
 		int br1 = (int)st.size();
 		ls.push(br + br1);
-		MemLabel ml = new MemLabel();
 		MemRelAccess mra = new MemRelAccess(st.size(), -ls.peek(), depth);
 		Memory.accesses.put(varDecl, mra);
 		}

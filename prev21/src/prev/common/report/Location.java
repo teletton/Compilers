@@ -92,7 +92,7 @@ public class Location implements Locatable, Loggable {
 	public Location location() {
 		return this;
 	}
-
+	
 	public int end1() {
 		return this.endLine;
 	}

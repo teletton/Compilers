@@ -32,7 +32,6 @@ public class ImcESTMT extends ImcStmt {
 	public void log(Logger logger) {
 		logger.begElement("imc");
 		logger.addAttribute("instruction", "ESTMT");
-		//System.out.println(expr);
 		expr.log(logger);
 		logger.endElement();
 	}

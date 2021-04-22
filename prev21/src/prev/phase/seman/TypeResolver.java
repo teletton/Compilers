@@ -67,11 +67,12 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
             funDecl.pars.accept(this, 33);
        
             SemType tt = funDecl.type.accept(this, arg);
-            if (!(tt instanceof SemInt) && !(tt instanceof SemChar) && !(tt instanceof SemBool) && !(tt instanceof SemPtr) && !(tt instanceof SemVoid)) {
+            if (tt instanceof SemName) 
+                tt = ((SemName)tt).type();
+            if ((!(tt instanceof SemInt) && !(tt instanceof SemChar) && !(tt instanceof SemBool) && !(tt instanceof SemPtr) && !(tt instanceof SemVoid))) {
                 throw new Report.Error("SEMANTIC ERROR at: "+ (funDecl.type).location()+" The return type of the function must be of type int, char, ptr, bool or void");
             }
-            if ((tt instanceof SemName) && !(((SemName)tt).type() instanceof SemChar)  && !(((SemName)tt).type() instanceof SemInt)  && !(((SemName)tt).type() instanceof SemBool)  && !(((SemName)tt).type() instanceof SemVoid))
-            throw new Report.Error("SEMANTIC ERROR at: "+ (funDecl.type).location()+" The return type of the function must be of type int, char, ptr, bool or void");
+            
             SemAn.ofType.put(funDecl, tt);
             
         
@@ -81,6 +82,7 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
             //System.out.println(t1);
             //System.out.println(tt);
             //System.out.println(funDecl.location());
+            if (t1 instanceof SemName) t1 = ((SemName)t1).type();
             if (tt.getClass() != t1.getClass() && !((funDecl.name).equals("main"))) 
                 throw new Report.Error("SEMANTIC ERROR at: " + funDecl.location()+" The return type of the function is different than type that expression of the function returns.");
 
@@ -228,7 +230,7 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
         //System.out.println(binExpr.location());
         switch (binExpr.oper) {
             case OR:
-                if (((ex1 instanceof SemBool) && (ex2 instanceof SemBool)) || ((ex1 instanceof SemName) && (ex2 instanceof SemName) && (((SemName)ex1).type() instanceof SemBool) && (((SemName)ex2).type() instanceof SemBool))) {
+                if (((ex1 instanceof SemBool) || ((ex1 instanceof SemName) && ((SemName)ex1).type() instanceof SemBool)) && ((ex2 instanceof SemBool) || ((ex2 instanceof SemName) && ((SemName)ex2).type() instanceof SemBool))) {
                     a1 = a2|a3;
                     SemAn.ofType.put(binExpr, new SemBool());
                     return tb;
@@ -238,7 +240,9 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
                 }
 
             case AND:
-                if (((ex1 instanceof SemBool) && (ex2 instanceof SemBool)) || ((ex1 instanceof SemName) && (ex2 instanceof SemName) && (((SemName)ex1).type() instanceof SemBool) && (((SemName)ex2).type() instanceof SemBool))) {
+                //System.out.println(ex1);
+                //System.out.println(ex2);
+                if (((ex1 instanceof SemBool) || ((ex1 instanceof SemName) && ((SemName)ex1).type() instanceof SemBool)) && ((ex2 instanceof SemBool) || ((ex2 instanceof SemName) && ((SemName)ex2).type() instanceof SemBool))) {
                     a1 = a2&a3;
                     SemAn.ofType.put(binExpr, new SemBool());
                     return tb;
@@ -248,7 +252,7 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
                 }
 
             case ADD:
-                if (((ex1 instanceof SemInt) && (ex2 instanceof SemInt)) || ((ex1 instanceof SemName) && (ex2 instanceof SemName) && (((SemName)ex1).type() instanceof SemInt) && (((SemName)ex2).type() instanceof SemInt))) {
+                if (((ex1 instanceof SemInt) || ((ex1 instanceof SemName) && ((SemName)ex1).type() instanceof SemInt)) && ((ex2 instanceof SemInt) || ((ex2 instanceof SemName) && ((SemName)ex2).type() instanceof SemInt))) {
                     i1 = i2+i3;
                     SemAn.ofType.put(binExpr, new SemInt());
                     return ti;
@@ -260,7 +264,9 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
                 }
 
             case SUB:
-                if (((ex1 instanceof SemInt) && (ex2 instanceof SemInt)) || ((ex1 instanceof SemName) && (ex2 instanceof SemName) && (((SemName)ex1).type() instanceof SemInt) && (((SemName)ex2).type() instanceof SemInt))) {
+                boolean ccc = false;
+                
+                if (((ex1 instanceof SemInt) || ((ex1 instanceof SemName) && ((SemName)ex1).type() instanceof SemInt)) && ((ex2 instanceof SemInt) || ((ex2 instanceof SemName) && ((SemName)ex2).type() instanceof SemInt))) {
                     i1 = i2-i3;
                     SemAn.ofType.put(binExpr, new SemInt());
                     return ti;
@@ -270,8 +276,7 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
                 }
 
             case MOD:
-                if (((ex1 instanceof SemInt) && (ex2 instanceof SemInt)) || ((ex1 instanceof SemName) && (ex2 instanceof SemName) && (((SemName)ex1).type() instanceof SemInt) && (((SemName)ex2).type() instanceof SemInt))) {
-                    i1 = i2%i3;
+            if (((ex1 instanceof SemInt) || ((ex1 instanceof SemName) && ((SemName)ex1).type() instanceof SemInt)) && ((ex2 instanceof SemInt) || ((ex2 instanceof SemName) && ((SemName)ex2).type() instanceof SemInt))) {                    i1 = i2%i3;
                     SemAn.ofType.put(binExpr, new SemInt());
                     return ti;
                 }
@@ -279,8 +284,7 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
                     throw new Report.Error("SEMANTIC ERROR at: "+binExpr.location()+" The expressions are not of type int");
                 }
             case MUL:
-                if (((ex1 instanceof SemInt) && (ex2 instanceof SemInt)) || ((ex1 instanceof SemName) && (ex2 instanceof SemName) && (((SemName)ex1).type() instanceof SemInt) && (((SemName)ex2).type() instanceof SemInt))) {
-                    i1 = i2*i3;
+            if (((ex1 instanceof SemInt) || ((ex1 instanceof SemName) && ((SemName)ex1).type() instanceof SemInt)) && ((ex2 instanceof SemInt) || ((ex2 instanceof SemName) && ((SemName)ex2).type() instanceof SemInt))) {                    i1 = i2*i3;
                     SemAn.ofType.put(binExpr, new SemInt());
                     //System.out.println(ex1);
                     //System.out.println(ex2);
@@ -291,8 +295,7 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
                 }
                 
             case DIV:
-                if (((ex1 instanceof SemInt) && (ex2 instanceof SemInt)) || ((ex1 instanceof SemName) && (ex2 instanceof SemName) && (((SemName)ex1).type() instanceof SemInt) && (((SemName)ex2).type() instanceof SemInt))) {
-                    i1 = i2/i3;
+            if (((ex1 instanceof SemInt) || ((ex1 instanceof SemName) && ((SemName)ex1).type() instanceof SemInt)) && ((ex2 instanceof SemInt) || ((ex2 instanceof SemName) && ((SemName)ex2).type() instanceof SemInt))) {                    i1 = i2/i3;
                     
                     SemAn.ofType.put(binExpr, new SemInt());
                     return ti;
@@ -432,6 +435,8 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
         SemType tip;
         tip = castExpr.type.accept(this, arg);
         SemType ret = tip;
+        if (ret instanceof SemName) 
+            ret = ((SemName)ret).type();
         SemAn.ofType.put(castExpr, ret);
         return ret;
     }
@@ -567,6 +572,10 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
         //System.out.println(assignStmt.dst.getClass());
         //System.out.println(ex1);
         //System.out.println(ex2);
+        if (ex1 instanceof SemName) 
+            ex1 = ((SemName)ex1).type();
+        if (ex2 instanceof SemName) 
+            ex2 = ((SemName)ex2).type();
         if (ex1.getClass() != ex2.getClass() || (ex1 instanceof SemVoid))
             throw new Report.Error("SEMANTIC ERROR at: "+ assignStmt.location() + " Types of statements are different");
         SemVoid sv = new SemVoid();
@@ -589,7 +598,7 @@ public class TypeResolver extends AstFullVisitor<SemType, Object> {
         //System.out.println("ifstmtid = "+ifStmt.id()+" arg = "+arg);
         
          SemType st =  ifStmt.cond.accept(this, arg);
-         if (!(st instanceof SemBool)) throw new Report.Error("SEMANTIC ERROR at: "+ifStmt.location()+" The condition of the if statement is not of type boolean");
+         if (!(st instanceof SemBool) && !((st instanceof SemName) && (((SemName)st).type() instanceof SemBool))) throw new Report.Error("SEMANTIC ERROR at: "+ifStmt.location()+" The condition of the if statement is not of type boolean");
         if (ifStmt.thenStmt != null)
             ifStmt.thenStmt.accept(this, arg);
         if (ifStmt.elseStmt != null)

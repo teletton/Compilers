@@ -17,6 +17,7 @@ import prev.phase.memory.*;
 
 public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 	public int baraj = 0; 
+	public boolean treba = false;
 	Vector<ImcExpr> vie;
 	Vector<Long> offs;
 	Vector<ImcStmt> viss;
@@ -84,13 +85,16 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 	@Override
 	public ImcExpr visit(AstArrExpr arrExpr, Stack<MemFrame> arg) {
         //System.out.println("EXPRarrexpr");
+		treba = true;
 		ImcExpr ie1 = arrExpr.arr.accept(this, arg);
+		treba = false;
 		ImcExpr ie2 = arrExpr.idx.accept(this, arg);
 		SemType st = SemAn.ofType.get(arrExpr);
 
 		ImcBINOP ib1 = new ImcBINOP(ImcBINOP.Oper.MUL, ie2, new ImcCONST(st.size()));
 		ImcBINOP ib = new ImcBINOP(ImcBINOP.Oper.ADD, ie1, ib1);
 		ImcMEM im = new ImcMEM(ib);
+		
 		ImcGen.exprImc.put(arrExpr, im);
 		return im;
 	}
@@ -124,7 +128,7 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
             return iconst;
         } else if (tip instanceof SemPtr) {
 			if (((SemPtr)tip).baseType instanceof SemChar) {
-				ImcNAME in = new ImcNAME(new MemLabel());
+				ImcNAME in = new ImcNAME(Memory.strings.get(atomExpr).label);
 				ImcGen.exprImc.put(atomExpr, in);
 				return in;
 			}
@@ -220,8 +224,18 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 				offs.add((long)0);
 				vie.add(new ImcCONST(0));
 			} else {
+				
 				offs.add((long)0);
-				vie.add(new ImcTEMP(arg.peek().FP));
+				int rez = mf.depth;
+				//System.out.println(rez);
+				//System.out.println(callExpr.name);
+				//System.out.println(arg.peek().label.name);
+				if (rez > 1 && mf.label.name.equals(arg.peek().label.name))  {
+					vie.add(new ImcMEM(new ImcTEMP(arg.peek().FP)));
+				}
+				else { 
+					vie.add(new ImcTEMP(arg.peek().FP));
+				}
 			}
 			baraj = 1;
 			callExpr.args.accept(this, arg);
@@ -260,6 +274,8 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 	public ImcExpr visit(AstNameExpr nameExpr, Stack<MemFrame> arg) {
         //System.out.println("EXPRnameexpr"+ " id = " + nameExpr.id);
 		AstDecl ad = SemAn.declaredAt.get(nameExpr);
+		//System.out.println(nameExpr.name);
+		//System.out.println(SemAn.ofType.get(nameExpr));
 		if (ad instanceof AstVarDecl) {
 			MemAccess ma = Memory.accesses.get((AstVarDecl)ad);
 			if (ma instanceof MemAbsAccess) {
@@ -269,13 +285,47 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 				return im;
 			} else if (ma instanceof MemRelAccess) {
 				MemFrame mf = arg.peek();
+				int raz = mf.depth - ((MemRelAccess)ma).depth;
+				
 				ImcTEMP it = new ImcTEMP(mf.FP);
+				ImcMEM im1;
+				if (raz > 0) {
+					im1 = new ImcMEM(it);
+					for (int i = 1; i < raz; i++) {
+						im1 = new ImcMEM(im1);
+					}
+					long c = ((MemRelAccess)ma).offset;
+					ImcBINOP ib;
+					if (c < 0) {
+						ib = new ImcBINOP(ImcBINOP.Oper.SUB, im1, new ImcCONST(-1*c));
+					} else {
+						ib = new ImcBINOP(ImcBINOP.Oper.ADD, im1, new ImcCONST(c));
+					}
+					//System.out.println(nameExpr.name + " " + nameExpr.id);
+					if (SemAn.ofType.get(nameExpr) instanceof SemArr ) {
+						//System.out.println("BLEZE");
+						
+						ImcGen.exprImc.put(nameExpr, ib);
+						return ib;
+					}
+					ImcMEM im = new ImcMEM(ib);
+					ImcGen.exprImc.put(nameExpr, im);
+					return im;
+				}
+				
 				long c = ((MemRelAccess)ma).offset;
 				ImcBINOP ib;
 				if (c < 0) {
 					ib = new ImcBINOP(ImcBINOP.Oper.SUB, it, new ImcCONST(-1*c));
 				} else {
 					ib = new ImcBINOP(ImcBINOP.Oper.ADD, it, new ImcCONST(c));
+				}
+				//System.out.println(nameExpr.name + " " + nameExpr.id);
+				if (SemAn.ofType.get(nameExpr) instanceof SemArr ) {
+					//System.out.println("BLEZE");
+					
+					ImcGen.exprImc.put(nameExpr, ib);
+					return ib;
 				}
 				ImcMEM im = new ImcMEM(ib);
 				ImcGen.exprImc.put(nameExpr, im);
@@ -290,7 +340,34 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 				return im;
 			} else if (ma instanceof MemRelAccess) {
 				MemFrame mf = arg.peek();
+				int raz = mf.depth - ((MemRelAccess)ma).depth;
+				
 				ImcTEMP it = new ImcTEMP(mf.FP);
+				ImcMEM im1;
+				if (raz > 0) {
+					im1 = new ImcMEM(it);
+					for (int i = 1; i < raz; i++) {
+						im1 = new ImcMEM(im1);
+					}
+					long c = ((MemRelAccess)ma).offset;
+					ImcBINOP ib;
+					if (c < 0) {
+						ib = new ImcBINOP(ImcBINOP.Oper.SUB, im1, new ImcCONST(-1*c));
+					} else {
+						ib = new ImcBINOP(ImcBINOP.Oper.ADD, im1, new ImcCONST(c));
+					}
+					//System.out.println(nameExpr.name + " " + nameExpr.id);
+					if (SemAn.ofType.get(nameExpr) instanceof SemArr ) {
+						//System.out.println("BLEZE");
+						
+						ImcGen.exprImc.put(nameExpr, ib);
+						return ib;
+					}
+					ImcMEM im = new ImcMEM(ib);
+					ImcGen.exprImc.put(nameExpr, im);
+					return im;
+				}
+				
 				long c = ((MemRelAccess)ma).offset;
 				ImcBINOP ib;
 				if (c < 0) {
@@ -298,10 +375,18 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 				} else {
 					ib = new ImcBINOP(ImcBINOP.Oper.ADD, it, new ImcCONST(c));
 				}
+				//System.out.println(nameExpr.name + " " + nameExpr.id);
+				if (SemAn.ofType.get(nameExpr) instanceof SemArr ) {
+					//System.out.println("BLEZE");
+					
+					ImcGen.exprImc.put(nameExpr, ib);
+					return ib;
+				}
 				ImcMEM im = new ImcMEM(ib);
 				ImcGen.exprImc.put(nameExpr, im);
 				return im;
 			}
+			
 		}
 		return null;
 	}
@@ -313,41 +398,52 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 			ImcExpr ie = pfxExpr.expr.accept(this, arg);
 			switch (pfxExpr.oper) {
 				case PTR: 
+					if (treba == true) {
+					ImcMEM im = new ImcMEM(ie); 
+					ImcGen.exprImc.put(pfxExpr, im);
+					return im;
+					}
 					ImcGen.exprImc.put(pfxExpr, ie);
 					return ie;
-				case ADD:  
-					ImcUNOP iu = new ImcUNOP(ImcUNOP.Oper.ADD, ie);
+				case ADD: 
+					ImcExpr ie7 = pfxExpr.expr.accept(this, arg); 
+					ImcUNOP iu = new ImcUNOP(ImcUNOP.Oper.ADD, ie7);
 					ImcGen.exprImc.put(pfxExpr, iu);
 					return iu;
 				case SUB:
-					ImcUNOP iu1 = new ImcUNOP(ImcUNOP.Oper.NEG, ie);
+					ImcExpr ie2 = pfxExpr.expr.accept(this, arg);
+					ImcUNOP iu1 = new ImcUNOP(ImcUNOP.Oper.NEG, ie2);
 					ImcGen.exprImc.put(pfxExpr, iu1);
 					return iu1;
 				case NOT:
-					ImcUNOP iu2 = new ImcUNOP(ImcUNOP.Oper.NOT, ie);
+					ImcExpr ie3 = pfxExpr.expr.accept(this, arg);
+					ImcUNOP iu2 = new ImcUNOP(ImcUNOP.Oper.NOT, ie3);
 					ImcGen.exprImc.put(pfxExpr, iu2);
 					return iu2;
 				case DEL:  
+					ImcExpr ie4 = pfxExpr.expr.accept(this, arg);
 					Vector<ImcExpr> argss = new Vector<ImcExpr>();
 					Vector<Long> offsss = new Vector<Long>();
 					offsss.add((long)0);
 					offsss.add((long)8);
 					argss.add(new ImcCONST(0));
-					argss.add(ie);
+					argss.add(ie4);
 					ImcCALL ic = new ImcCALL(new MemLabel("del"), offsss, argss);
 					ImcGen.exprImc.put(pfxExpr, ic);
 					return ic;
 				case NEW:  
+				ImcExpr ie5 = pfxExpr.expr.accept(this, arg);
 					Vector<ImcExpr> argss1 = new Vector<ImcExpr>();
 					Vector<Long> offsss1 = new Vector<Long>();
 					offsss1.add((long)0);
 					offsss1.add((long)8);
 					argss1.add(new ImcCONST(0));
-					argss1.add(ie);
+					argss1.add(ie5);
 					ImcCALL ic1 = new ImcCALL(new MemLabel("new"), offsss1, argss1);
 					ImcGen.exprImc.put(pfxExpr, ic1);
 					return ic1;
 				default:
+				
 					return ie;
 			}
 		}
@@ -364,8 +460,8 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 		long brojac = 0;
 		for (AstCompDecl at1 : ((AstRecType)at).comps) {
 			if (at1.name.equals(recExpr.comp.name)) break;
-			System.out.println(SemAn.ofType.get(at1));
-			System.out.println(at1);
+			//System.out.println(SemAn.ofType.get(at1));
+			//System.out.println(at1);
 			brojac += SemAn.isType.get(at1.type).size();
 		}
 		ImcBINOP ib = new ImcBINOP(ImcBINOP.Oper.ADD, ie, new ImcCONST(brojac));
@@ -377,10 +473,14 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 	@Override
 	public ImcExpr visit(AstSfxExpr sfxExpr, Stack<MemFrame> arg) {
         //System.out.println("EXPRsfxexpr");
-		ImcExpr ie = sfxExpr.expr.accept(this, arg);
-		ImcMEM im = new ImcMEM(ie);
-		ImcGen.exprImc.put(sfxExpr, im);
-		return ie;
+			ImcExpr ie = sfxExpr.expr.accept(this, arg);
+			if (treba == true) {
+				ImcGen.exprImc.put(sfxExpr, ie);
+			return ie;
+			}
+			ImcMEM im = new ImcMEM(ie);
+			ImcGen.exprImc.put(sfxExpr, im);
+			return im;
 		
 	}
 
@@ -391,9 +491,15 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 			//System.out.println("AJDE");
 			baraj = 2;
 			ImcExpr ie = stmtExpr.stmts.accept(this, arg);
+			ImcExpr ie1 = new ImcCONST(0);
+			ImcStmt ist = viss.get(viss.size() - 1);
+				if (ist instanceof ImcESTMT && !(((ImcESTMT)ist).expr instanceof ImcCALL)) {
+					ie1 = ((ImcESTMT)ist).expr;
+				}
+			
 			baraj = 0;
 			ImcSTMTS is = new ImcSTMTS(viss);
-			ImcSEXPR ise = new ImcSEXPR(is, new ImcCONST(0));
+			ImcSEXPR ise = new ImcSEXPR(is, ie1);
 			ImcGen.exprImc.put(stmtExpr, ise);
 			return ise;
 		}
@@ -406,7 +512,9 @@ public class ExprGenerator implements AstVisitor<ImcExpr, Stack<MemFrame>> {
 		if (whereExpr.decls != null)
 			whereExpr.decls.accept(this, arg);
 		if (whereExpr.expr != null) {
-			return whereExpr.expr.accept(this, arg);
+			ImcExpr ie = whereExpr.expr.accept(this, arg);
+			ImcGen.exprImc.put(whereExpr, ie);
+			return ie;
 		}
 		
 		return null;

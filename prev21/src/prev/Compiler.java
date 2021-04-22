@@ -11,7 +11,8 @@ import prev.phase.abstr.*;
 import prev.phase.seman.*;
 import prev.phase.memory.*;
 import prev.phase.imcgen.*;
-import prev.data.mem.*;
+import prev.phase.imclin.*;
+import prev.phase.asmgen.*;
 
 /**
  * The compiler.
@@ -21,7 +22,7 @@ public class Compiler {
 	// COMMAND LINE ARGUMENTS
 
 	/** All valid phases of the compiler. */
-	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen";
+	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen|imclin";
 
 	/** Values of command line arguments. */
 	private static HashMap<String, String> cmdLine = new HashMap<String, String>();
@@ -104,7 +105,7 @@ public class Compiler {
 			if (cmdLine.get("--dst-file-name") == null) {
 				cmdLine.put("--dst-file-name", cmdLine.get("--src-file-name").replaceFirst("\\.[^./]*$", "") + ".mms");
 			}
-			if (cmdLine.get("--target-phase") == null) {
+			if ((cmdLine.get("--target-phase") == null) || (cmdLine.get("--target-phase").equals("all"))) {
 				cmdLine.put("--target-phase", phases.replaceFirst("^.*\\|", ""));
 			}
 
@@ -126,7 +127,7 @@ public class Compiler {
 				}
 				if (Compiler.cmdLineArgValue("--target-phase").equals("synan"))
 					break;
-				
+
 				// Abstract syntax tree construction.
 				try (Abstr abstr = new Abstr()) {
 					Abstr.tree = SynAn.tree.ast;
@@ -135,12 +136,12 @@ public class Compiler {
 				}
 				if (Compiler.cmdLineArgValue("--target-phase").equals("abstr"))
 					break;
-				
+
 				// Semantic analysis.
 				try (SemAn seman = new SemAn()) {
-					Abstr.tree.accept(new NameResolver(), 0);
-					Abstr.tree.accept(new TypeResolver(), 0);
-					Abstr.tree.accept(new AddrResolver(), 0);
+					Abstr.tree.accept(new NameResolver(), null);
+					Abstr.tree.accept(new TypeResolver(), null);
+					Abstr.tree.accept(new AddrResolver(), null);
 					AbsLogger logger = new AbsLogger(seman.logger);
 					logger.addSubvisitor(new SemLogger(seman.logger));
 					Abstr.tree.accept(logger, "Decls");
@@ -150,7 +151,7 @@ public class Compiler {
 
 				// Memory layout.
 				try (Memory memory = new Memory()) {
-					Abstr.tree.accept(new MemEvaluator(), 0);
+					Abstr.tree.accept(new MemEvaluator(), null);
 					AbsLogger logger = new AbsLogger(memory.logger);
 					logger.addSubvisitor(new SemLogger(memory.logger));
 					logger.addSubvisitor(new MemLogger(memory.logger));
@@ -160,10 +161,8 @@ public class Compiler {
 					break;
 
 				// Intermediate code generation.
-				
 				try (ImcGen imcgen = new ImcGen()) {
-					Stack<MemFrame> ss = new Stack<MemFrame>();
-					Abstr.tree.accept(new CodeGenerator(), ss);
+					Abstr.tree.accept(new CodeGenerator(), null);
 					AbsLogger logger = new AbsLogger(imcgen.logger);
 					logger.addSubvisitor(new SemLogger(imcgen.logger));
 					logger.addSubvisitor(new MemLogger(imcgen.logger));
@@ -172,8 +171,26 @@ public class Compiler {
 				}
 				if (Compiler.cmdLineArgValue("--target-phase").equals("imcgen"))
 					break;
+
+				// Linearization of intermediate code.
+				try (ImcLin imclin = new ImcLin()) {
+					Abstr.tree.accept(new ChunkGenerator(), null);
+					imclin.log();
+
+					Interpreter interpreter = new Interpreter(ImcLin.dataChunks(), ImcLin.codeChunks());
+					System.out.println("EXIT CODE: " + interpreter.run("_main"));
+				}
+				if (Compiler.cmdLineArgValue("--target-phase").equals("imclin"))
+					break;
 				
-				break;
+				// Machine code generation.
+				try (AsmGen asmgen = new AsmGen()) {
+					asmgen.genAsmCodes();
+					asmgen.log();
+				}
+				if (Compiler.cmdLineArgValue("--target-phase").equals("acmgen"))
+					break;
+
 			}
 
 			Report.info("Done.");

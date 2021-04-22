@@ -45,11 +45,8 @@ public class ImcCALL extends ImcExpr {
 	public void log(Logger logger) {
 		logger.begElement("imc");
 		logger.addAttribute("instruction", "CALL(" + label.name + ")");
-		//System.out.println(label.name);
-		for (int a = 0; a < args.size(); a++) {
-			//System.out.println(args);
+		for (int a = 0; a < args.size(); a++)
 			args.get(a).log(logger);
-		}
 		logger.endElement();
 	}
 

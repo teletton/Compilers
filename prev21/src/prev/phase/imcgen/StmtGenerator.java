@@ -74,6 +74,7 @@ public class StmtGenerator implements AstVisitor<ImcStmt, Stack<MemFrame>> {
 		vis.add(new ImcLABEL(l1));
 		vis.add(new ImcCJUMP(ie, l2, l3));
 		vis.add(new ImcLABEL(l2));
+		vis.add(is);
 		vis.add(new ImcJUMP(l1));
 		vis.add(new ImcLABEL(l3));
 		ImcSTMTS iss = new ImcSTMTS(vis);
