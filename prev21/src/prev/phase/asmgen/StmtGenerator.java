@@ -12,5 +12,28 @@ import prev.common.report.*;
  * Machine code generator for statements.
  */
 public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
-	
+
+	public Vector<AsmInstr> visit(ImcCALL call, Object visArg) {
+		return null;
+	}
+
+	public Vector<AsmInstr> visit(ImcCJUMP cjump, Object visArg) {
+		return null;
+	}
+
+	public Vector<AsmInstr> visit(ImcJUMP jump, Object visArg) {
+		return null;
+	}
+
+	public Vector<AsmInstr> visit(ImcLABEL label, Object visArg) {
+		return null;
+	}
+
+	public Vector<AsmInstr> visit(ImcMOVE move, Object visArg) {
+		return null;
+	}
+
+	public Vector<AsmInstr> visit(ImcSTMTS stmts, Object visArg) {
+		return null;
+	}
 }
