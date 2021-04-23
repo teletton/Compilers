@@ -27,11 +27,17 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 	}
 
 	public MemTemp visit(ImcNAME name, Vector<AsmInstr> visArg) {
-		return null;
+		Vector<MemTemp> d = new Vector<MemTemp>();
+		Vector<AsmInstr> ins = new Vector<AsmInstr>();
+		MemTemp d0 = new MemTemp();
+		d.add(d0);
+		AsmOPER ao = new AsmOPER("LDA `d0," + name.label.name, null, defs, null);
+		ins.add(ao);
+		return d0;
 	}
 
 	public MemTemp visit(ImcTEMP temp, Vector<AsmInstr> visArg) {
-		return null;
+		return temp.temp;
 	}
 
 	public MemTemp visit(ImcUNOP unOp, Vector<AsmInstr> visArg) {

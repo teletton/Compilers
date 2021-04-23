@@ -22,11 +22,19 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 	}
 
 	public Vector<AsmInstr> visit(ImcJUMP jump, Object visArg) {
-		return null;
+		Vector<MemLabel> js = new Vector<MemLabel>();
+		Vector<AsmInstr> ins = new Vector<AsmInstr>();
+		js.add(jump.label);
+		AsmOPER ao = new AsmOPER("JMP " + jump.label.name, null, null, js);
+		ins.add(ao);
+		return ins;
 	}
 
 	public Vector<AsmInstr> visit(ImcLABEL label, Object visArg) {
-		return null;
+		Vector<AsmInstr> ins = new Vector<AsmInstr>();
+		AsmLABEL al = new AsmLABEL(label.label);
+		ins.add(al);
+		return ins;
 	}
 
 	public Vector<AsmInstr> visit(ImcMOVE move, Object visArg) {
