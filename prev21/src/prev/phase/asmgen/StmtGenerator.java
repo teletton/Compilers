@@ -13,10 +13,6 @@ import prev.common.report.*;
  */
 public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 
-	public Vector<AsmInstr> visit(ImcCALL call, Object visArg) {
-		return null;
-	}
-
 	public Vector<AsmInstr> visit(ImcCJUMP cjump, Object visArg) {
 		return null;
 	}
@@ -38,10 +34,6 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 	}
 
 	public Vector<AsmInstr> visit(ImcMOVE move, Object visArg) {
-		return null;
-	}
-
-	public Vector<AsmInstr> visit(ImcSTMTS stmts, Object visArg) {
 		return null;
 	}
 }
