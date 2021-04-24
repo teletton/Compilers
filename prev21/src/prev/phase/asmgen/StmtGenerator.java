@@ -14,7 +14,20 @@ import prev.common.report.*;
 public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 
 	public Vector<AsmInstr> visit(ImcCJUMP cjump, Object visArg) {
-		return null;
+		//Vector<AsmInstr> vis = new Vector<AsmInstr>();
+		ExprGenerator eg = new ExprGenerator();
+		MemTemp s0 = cjump.cond.accept(eg, null);
+		Vector<AsmInstr> cvis = eg.sis.pop();
+		Vector<MemLabel> js = new Vector<MemLabel>();
+		js.add(cjump.negLabel);
+		js.add(cjump.posLabel);
+		Vector<MemTemp> u = new Vector<MemTemp>();
+		u.add(s0);
+		Vector<AsmInstr> ins = new Vector<AsmInstr>();
+		ins.addAll(cvis);
+		AsmOPER ao = new AsmOPER("BNZ `s0," + cjump.posLabel.name, u, null, js);
+		ins.add(ao);
+		return ins;
 	}
 
 	public Vector<AsmInstr> visit(ImcJUMP jump, Object visArg) {
