@@ -13,6 +13,7 @@ import prev.common.report.*;
  */
 public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 
+	@Override
 	public Vector<AsmInstr> visit(ImcCJUMP cjump, Object visArg) {
 		//Vector<AsmInstr> vis = new Vector<AsmInstr>();
 		ExprGenerator eg = new ExprGenerator();
@@ -30,6 +31,7 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 		return ins;
 	}
 
+	@Override
 	public Vector<AsmInstr> visit(ImcJUMP jump, Object visArg) {
 		Vector<MemLabel> js = new Vector<MemLabel>();
 		Vector<AsmInstr> ins = new Vector<AsmInstr>();
@@ -39,6 +41,7 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 		return ins;
 	}
 
+	@Override
 	public Vector<AsmInstr> visit(ImcLABEL label, Object visArg) {
 		Vector<AsmInstr> ins = new Vector<AsmInstr>();
 		AsmLABEL al = new AsmLABEL(label.label);
@@ -46,7 +49,31 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 		return ins;
 	}
 
+	@Override
 	public Vector<AsmInstr> visit(ImcMOVE move, Object visArg) {
-		return null;
+		ExprGenerator eg = new ExprGenerator();
+		MemTemp d0 = move.dst.accept(eg, null);
+		Vector<AsmInstr> vis1 = eg.sis.pop();
+		ExprGenerator eg1 = new ExprGenerator();
+		MemTemp s0 = move.src.accept(eg1, null);
+		Vector<AsmInstr> vis2 = eg1.sis.pop();
+		Vector<AsmInstr> ins = new Vector<AsmInstr>();
+		ins.addAll(vis1);
+		ins.addAll(vis2);
+		if (move.dst instanceof ImcMEM) {
+			Vector<MemTemp> u = new Vector<MemTemp>();
+			u.add(s0);
+			u.add(d0);
+			AsmOPER ao = new AsmOPER("STO `s0,`s1,0", u, null, null);
+			ins.add(ao);
+		} else {
+			Vector<MemTemp> u = new Vector<MemTemp>();
+			u.add(s0);
+			Vector<MemTemp> d = new Vector<MemTemp>();
+			d.add(d0);
+			AsmOPER ao = new AsmOPER("OR `d0,`s0,0", u, d, null);
+			ins.add(ao);
+		}
+		return ins;
 	}
 }

@@ -29,18 +29,18 @@ if make -C src/prev/phase parser SEP=$SEP ; then
 		echo -------
 		echo test2
 		echo -------
-		make -C prg/ ${1:-'test2'} PHASE=parser SEP=$SEP
+		#make -C prg/ ${1:-'test2'} PHASE=parser SEP=$SEP
 		echo -------
 		echo test3
 		echo -------
-		make -C prg/ ${1:-'test3'} PHASE=parser SEP=$SEP
+		#make -C prg/ ${1:-'test3'} PHASE=parser SEP=$SEP
 		echo -------
 		echo test4
 		echo -------
-		make -C prg/ ${1:-'test4'} PHASE=parser SEP=$SEP
+		#make -C prg/ ${1:-'test4'} PHASE=parser SEP=$SEP
 		echo -------
 		echo test5
 		echo -------
-		make -C prg/ ${1:-'test5'} PHASE=parser SEP=$SEP
+		#make -C prg/ ${1:-'test5'} PHASE=parser SEP=$SEP
 	fi
 fi

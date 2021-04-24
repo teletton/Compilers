@@ -12,7 +12,8 @@ import prev.data.asm.*;
  */
 public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 
-	public Stack<Vector<AsmInstr>> sis;
+	Stack<Vector<AsmInstr> > sis;
+	@Override
     public MemTemp visit(ImcBINOP binOp, Vector<AsmInstr> visArg) {
 		MemTemp s0 = binOp.fstExpr.accept(this, visArg);
 		Vector<AsmInstr> bvis = sis.pop();
@@ -103,6 +104,7 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 		return d0;
 	}
 
+	@Override
 	public MemTemp visit(ImcCALL call, Vector<AsmInstr> visArg) {
 		Vector<MemLabel> js = new Vector<MemLabel>();
 		js.add(call.label);
@@ -129,6 +131,7 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 		return d0;
 	}
 
+	@Override
 	public MemTemp visit(ImcCONST constant, Vector<AsmInstr> visArg) {
 		MemTemp d0 = new MemTemp();
 		Vector<MemTemp> d = new Vector<MemTemp>();
@@ -149,10 +152,24 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 		return d0;
 	}
 
+	@Override
 	public MemTemp visit(ImcMEM mem, Vector<AsmInstr> visArg) {
-		return null;
+		MemTemp s0 = mem.addr.accept(this, visArg);
+		Vector<AsmInstr> vis = sis.pop();
+		MemTemp d0 = new MemTemp();
+		Vector<MemTemp> u = new Vector<MemTemp>();
+		Vector<MemTemp> d = new Vector<MemTemp>();
+		Vector<AsmInstr> ins = new Vector<AsmInstr>();
+		u.add(s0);
+		d.add(d0);
+		ins.addAll(vis);
+		AsmOPER ao = new AsmOPER("LDO `d0,`s0,0", u, d, null);
+		ins.add(ao);
+		sis.add(ins);
+		return d0;
 	}
 
+	@Override
 	public MemTemp visit(ImcNAME name, Vector<AsmInstr> visArg) {
 		Vector<MemTemp> d = new Vector<MemTemp>();
 		Vector<AsmInstr> ins = new Vector<AsmInstr>();
@@ -164,11 +181,14 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 		return d0;
 	}
 
+	@Override
 	public MemTemp visit(ImcTEMP temp, Vector<AsmInstr> visArg) {
+		System.out.println("TEMP");
 		sis.push(new Vector<AsmInstr>());
 		return temp.temp;
 	}
 
+	@Override
 	public MemTemp visit(ImcUNOP unOp, Vector<AsmInstr> visArg) {
 		MemTemp s0 = unOp.subExpr.accept(this, visArg);
 		Vector<AsmInstr> svis = sis.pop();
