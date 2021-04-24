@@ -28,8 +28,11 @@ public class AsmGen extends Phase {
 
 	public Code genAsmCode(LinCodeChunk codeChunk) {
 		Vector<AsmInstr> instrs = new Vector<AsmInstr>();
+		
+		
 		for (ImcStmt stmt : codeChunk.stmts()) {
-			instrs.addAll(stmt.accept(new StmtGenerator(), null));
+			//System.out.println(stmt);
+			instrs.addAll(stmt.accept(new StmtGenerator(), 0));
 		}
 		return new Code(codeChunk.frame, codeChunk.entryLabel, codeChunk.exitLabel, instrs);
 	}

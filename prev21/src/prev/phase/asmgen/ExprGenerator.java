@@ -12,7 +12,8 @@ import prev.data.asm.*;
  */
 public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 
-	Stack<Vector<AsmInstr> > sis;
+	public static Stack<Vector<AsmInstr>> sis = new Stack<Vector<AsmInstr>>();
+
 	@Override
     public MemTemp visit(ImcBINOP binOp, Vector<AsmInstr> visArg) {
 		MemTemp s0 = binOp.fstExpr.accept(this, visArg);
@@ -136,13 +137,15 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 		MemTemp d0 = new MemTemp();
 		Vector<MemTemp> d = new Vector<MemTemp>();
 		Vector<AsmInstr> ins = new Vector<AsmInstr>();
-		AsmOPER ao1 = new AsmOPER("SETH `d0," + (0xFFFF000000000000L & Math.abs(constant.value)), null, d, null);
+		//System.out.println(Long.toString(0x0000000000000FFFFL & Math.abs(constant.value)));
+		d.add(d0);
+		AsmOPER ao1 = new AsmOPER("SETH `d0," + Long.toString(0xFFFF000000000000L & Math.abs(constant.value)), null, d, null);
 		ins.add(ao1);
-		AsmOPER ao2 = new AsmOPER("INCMH `d0," + (0x0000FFFF00000000L & Math.abs(constant.value)), d, d, null);
+		AsmOPER ao2 = new AsmOPER("INCMH `d0," + Long.toString(0x0000FFFF00000000L & Math.abs(constant.value)), d, d, null);
 		ins.add(ao2);
-		AsmOPER ao3 = new AsmOPER("INCML `d0," + (0x00000000FFFF0000L & Math.abs(constant.value)), d, d, null);
+		AsmOPER ao3 = new AsmOPER("INCML `d0," + Long.toString(0x00000000FFFF0000L & Math.abs(constant.value)), d, d, null);
 		ins.add(ao3);
-		AsmOPER ao4 = new AsmOPER("INCL `d0," + (0x000000000000FFFFL & Math.abs(constant.value)), d, d, null);
+		AsmOPER ao4 = new AsmOPER("INCL `d0," + Long.toString(0x000000000000FFFFL & Math.abs(constant.value)), d, d, null);
 		ins.add(ao4);
 		if (constant.value < 0) {
 			AsmOPER ao5 = new AsmOPER("NEG `d0,0,`s0", d, d, null);
@@ -183,8 +186,8 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 
 	@Override
 	public MemTemp visit(ImcTEMP temp, Vector<AsmInstr> visArg) {
-		System.out.println("TEMP");
-		sis.push(new Vector<AsmInstr>());
+		//System.out.println("TEMP");
+		sis.push(visArg);
 		return temp.temp;
 	}
 

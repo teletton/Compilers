@@ -15,9 +15,9 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 
 	@Override
 	public Vector<AsmInstr> visit(ImcCJUMP cjump, Object visArg) {
-		//Vector<AsmInstr> vis = new Vector<AsmInstr>();
+		Vector<AsmInstr> vis = new Vector<AsmInstr>();
 		ExprGenerator eg = new ExprGenerator();
-		MemTemp s0 = cjump.cond.accept(eg, null);
+		MemTemp s0 = cjump.cond.accept(eg, vis);
 		Vector<AsmInstr> cvis = eg.sis.pop();
 		Vector<MemLabel> js = new Vector<MemLabel>();
 		js.add(cjump.negLabel);
@@ -51,11 +51,12 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 
 	@Override
 	public Vector<AsmInstr> visit(ImcMOVE move, Object visArg) {
+		Vector<AsmInstr> inn = new Vector<AsmInstr>();
 		ExprGenerator eg = new ExprGenerator();
-		MemTemp d0 = move.dst.accept(eg, null);
+		MemTemp d0 = move.dst.accept(eg, inn);
 		Vector<AsmInstr> vis1 = eg.sis.pop();
 		ExprGenerator eg1 = new ExprGenerator();
-		MemTemp s0 = move.src.accept(eg1, null);
+		MemTemp s0 = move.src.accept(eg1, inn);
 		Vector<AsmInstr> vis2 = eg1.sis.pop();
 		Vector<AsmInstr> ins = new Vector<AsmInstr>();
 		ins.addAll(vis1);

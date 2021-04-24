@@ -23,7 +23,7 @@ public class Compiler {
 	// COMMAND LINE ARGUMENTS
 
 	/** All valid phases of the compiler. */
-	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen|imclin|asmgen";
+	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen|imclin|acmgen";
 
 	/** Values of command line arguments. */
 	private static HashMap<String, String> cmdLine = new HashMap<String, String>();
@@ -176,7 +176,7 @@ public class Compiler {
 
 				// Linearization of intermediate code.
 				try (ImcLin imclin = new ImcLin()) {
-					Abstr.tree.accept(new ChunkGenerator(), null);
+					Abstr.tree.accept(new ChunkGenerator(), 0);
 					imclin.log();
 
 					//Interpreter interpreter = new Interpreter(ImcLin.dataChunks(), ImcLin.codeChunks());
