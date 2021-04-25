@@ -123,6 +123,8 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 		} 
 		AsmOPER ao = new AsmOPER("PUSHJ $8," + call.label.name, null, null, js);
 		ins.add(ao);
+		AsmOPER ao2 = new AsmOPER("POP 8,0", null, null, null);
+		ins.add(ao2);
 		MemTemp d0 = new MemTemp();
 		Vector<MemTemp> d = new Vector<MemTemp>();
 		d.add(d0);
