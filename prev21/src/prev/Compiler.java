@@ -5,7 +5,6 @@ import java.util.*;
 import org.antlr.v4.runtime.*;
 
 import prev.common.report.*;
-import prev.data.mem.MemFrame;
 import prev.phase.lexan.*;
 import prev.phase.synan.*;
 import prev.phase.abstr.*;
@@ -14,6 +13,8 @@ import prev.phase.memory.*;
 import prev.phase.imcgen.*;
 import prev.phase.imclin.*;
 import prev.phase.asmgen.*;
+import prev.phase.livean.*;
+import prev.data.mem.*;
 
 /**
  * The compiler.
@@ -23,7 +24,7 @@ public class Compiler {
 	// COMMAND LINE ARGUMENTS
 
 	/** All valid phases of the compiler. */
-	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen|imclin|acmgen";
+	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen|imclin|asmgen|livean";
 
 	/** Values of command line arguments. */
 	private static HashMap<String, String> cmdLine = new HashMap<String, String>();
@@ -179,8 +180,8 @@ public class Compiler {
 					Abstr.tree.accept(new ChunkGenerator(), 0);
 					imclin.log();
 
-					//Interpreter interpreter = new Interpreter(ImcLin.dataChunks(), ImcLin.codeChunks());
-					//System.out.println("EXIT CODE: " + interpreter.run("_main"));
+					Interpreter interpreter = new Interpreter(ImcLin.dataChunks(), ImcLin.codeChunks());
+					System.out.println("EXIT CODE: " + interpreter.run("_main"));
 				}
 				if (Compiler.cmdLineArgValue("--target-phase").equals("imclin"))
 					break;
@@ -190,7 +191,15 @@ public class Compiler {
 					asmgen.genAsmCodes();
 					asmgen.log();
 				}
-				if (Compiler.cmdLineArgValue("--target-phase").equals("acmgen"))
+				if (Compiler.cmdLineArgValue("--target-phase").equals("asmgen"))
+					break;
+				
+				// Liveness analysis.
+				try (LiveAn livean = new LiveAn()) {
+					livean.analysis();
+					livean.log();
+				}
+				if (Compiler.cmdLineArgValue("--target-phase").equals("livean"))
 					break;
 
 			}
