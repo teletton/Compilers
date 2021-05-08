@@ -1,53 +1,28 @@
-package prev.phase.livean;
+package prev.phase.regall;
+
+import java.util.*;
 
 import prev.data.mem.*;
 import prev.data.asm.*;
 import prev.phase.*;
 import prev.phase.asmgen.*;
-import java.util.*;
 
 /**
- * Liveness analysis.
+ * Register allocation.
  */
-public class LiveAn extends Phase {
+public class RegAll extends Phase {
+	
+	/** Mapping of temporary variables to registers. */
+	public final HashMap<MemTemp, Integer> tempToReg = new HashMap<MemTemp, Integer>();
 
-	public LiveAn() {
-		super("livean");
+	public RegAll() {
+		super("regall");
 	}
 
-	public void analysis() {
-		for (Code code : AsmGen.codes) {
-			boolean cc = true;
-			while (cc) {
-				int brojac = 0;
-				for (int i = 0; i < code.instrs.size(); i++) {
-					AsmInstr ins = code.instrs.get(i);
-					int in1 = ins.in().size();
-					int out1 = ins.out().size();
-					HashSet<MemTemp> out2 = ins.out();
-					ins.addInTemps(new HashSet<MemTemp>(ins.uses()));
-					for (MemTemp d : ins.defs()) {
-						out2.remove(d);
-					}
-					ins.addInTemps(out2);
-					if (i + 1 < code.instrs.size()) {
-						ins.addOutTemp(code.instrs.get(i + 1).in());
-					}
-					if ((in1 != ins.in().size()) || (out1 != ins.out().size())) {
-						brojac++;
-					}
-					if (brojac > 0) {
-						cc = true;
-					} else {
-						cc = false;
-					}
-					// System.out.println(i + " " + in1 + " " + ins.in().size() + " " + out1 + " " +
-					// ins.out().size());
-				}
-			}
-		}
+	public void allocate() {
+		// TODO
 	}
-
+	
 	public void log() {
 		if (logger == null)
 			return;
@@ -60,7 +35,7 @@ public class LiveAn extends Phase {
 			logger.begElement("instructions");
 			for (AsmInstr instr : code.instrs) {
 				logger.begElement("instruction");
-				logger.addAttribute("code", instr.toString());
+				logger.addAttribute("code", instr.toString(tempToReg));
 				logger.begElement("temps");
 				logger.addAttribute("name", "use");
 				for (MemTemp temp : instr.uses()) {
