@@ -29,6 +29,11 @@ public class Compiler {
 
 	/** Values of command line arguments. */
 	private static HashMap<String, String> cmdLine = new HashMap<String, String>();
+	public static int numofregs = 8;
+
+	public int funnum() {
+		return this.numofregs;
+	}
 
 	/**
 	 * Returns the value of a command line argument.
@@ -56,6 +61,13 @@ public class Compiler {
 			for (int argc = 0; argc < args.length; argc++) {
 				if (args[argc].startsWith("--")) {
 					// Command-line switch.
+					if (args[argc].matches("--num-regs=.*")) {
+						String num = "";
+						for (int i = 11; i < args[argc].length(); i++) {
+							num += args[argc].charAt(i);
+						}
+						numofregs = Integer.parseInt(num);
+					}
 					if (args[argc].matches("--src-file-name=.*")) {
 						if (cmdLine.get("--src-file-name") == null) {
 							cmdLine.put("--src-file-name", args[argc]);
