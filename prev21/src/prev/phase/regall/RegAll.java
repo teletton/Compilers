@@ -171,6 +171,14 @@ public class RegAll extends Phase {
 				}
 			}
 		}
+
+		for (int i = 0; i < numOfTem; i++) {
+			deg.set(i, graf.get(i).size());
+		}
+
+		for (int i = 0; i < numOfTem; i++) {
+			pq.add(new Pair(deg.get(i), i));
+		}
 	}
 
 	public void allocateCode(Code code) {
