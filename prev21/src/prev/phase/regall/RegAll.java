@@ -46,7 +46,7 @@ public class RegAll extends Phase {
 	Vector<Vector<Integer>> graf = new Vector<Vector<Integer>>();
 	Vector<Integer> deg = new Vector<Integer>();
 	PriorityQueue<Pair> pq = new PriorityQueue<Pair>();
-	Stack<MemTemp> ss = new Stack<MemTemp>();
+	Stack<Integer> ss = new Stack<Integer>();
 	Vector<Integer> colour = new Vector<Integer>();
 	HashMap<Integer, Boolean> hm = new HashMap<Integer, Boolean>();
 	HashSet<Integer> all = new HashSet<Integer>();
@@ -181,8 +181,58 @@ public class RegAll extends Phase {
 		}
 	}
 
+	public boolean simplifyGraph() {
+		while (!pq.isEmpty()) {
+			Pair p = pq.poll();
+			if (p.first != deg.get(p.second) || vis.get(p.second) == 1)
+				continue;
+			if (p.first >= numreg) {
+				pq.add(p);
+				break;
+			}
+			int x = p.second;
+			for (Integer y : graf.get(x)) {
+				if (vis.get(y) == 0) {
+					deg.set(x, deg.get(x) - 1);
+					deg.set(y, deg.get(y) - 1);
+					pq.add(new Pair(deg.get(y), y));
+				}
+			}
+			ss.add(x);
+			vis.set(x, 1);
+		}
+		return pq.isEmpty();
+	}
+
+	public void Colour() {
+		while (!ss.empty()) {
+			int top = ss.pop();
+
+			Vector<Boolean> visCol = new Vector<Boolean>();
+			for (int i = 0; i < numreg; i++) {
+				visCol.add(false);
+			}
+
+			for (Integer x : graf.get(top)) {
+				if (colour.get(x) >= 0) {
+					visCol.set(colour.get(x), true);
+				}
+			}
+			int colo = -10;
+			for (int i = 0; i < numreg; i++) {
+				if (!visCol.get(i)) {
+					colo = i;
+					break;
+				}
+			}
+
+			colour.set(top, colo);
+		}
+	}
+
 	public void allocateCode(Code code) {
 		initialization(code);
+
 	}
 
 	public void allocate() {
