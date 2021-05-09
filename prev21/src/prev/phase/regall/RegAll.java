@@ -55,6 +55,7 @@ public class RegAll extends Phase {
 	Vector<Integer> vis = new Vector<Integer>();
 	HashSet<Integer> spill = new HashSet<Integer>();
 	int numOfTem = 0;
+	int br = 0;
 
 	public RegAll() {
 		super("regall");
@@ -204,6 +205,59 @@ public class RegAll extends Phase {
 		}
 	}
 
+	public void Replace(Code code, MemTemp t) {
+		br += 8;
+		Vector<AsmInstr> newInstr = new Vector<AsmInstr>();
+		for (int i = 0; i < code.instrs.size(); i++) {
+			if (code.instrs.get(i) instanceof AsmLABEL) {
+				newInstr.add(code.instrs.get(i));
+				continue;
+			}
+			AsmOPER ins = (AsmOPER) code.instrs.get(i);
+			Vector<MemTemp> uses = ins.uses();
+			Vector<MemTemp> defs = ins.defs();
+			Vector<MemLabel> jumps = ins.jumps();
+
+			for (int j = 0; j < ins.uses().size(); j++) {
+				if (ins.uses().get(j) == t) {
+					MemTemp newT = new MemTemp();
+					Vector<MemTemp> uses1 = new Vector<MemTemp>();
+					Vector<MemTemp> defs1 = new Vector<MemTemp>();
+					uses.add(newT);
+					defs.add(newT);
+					newInstr.add(new AsmOPER("ADD `d0, $254, " + Long.toString(br + code.frame.locsSize + 2 * 8), null,
+							defs1, null));
+					newInstr.add(new AsmOPER("LDO `d0, `s0, 0", uses1, defs1, null));
+					uses.set(j, newT);
+					break;
+				}
+			}
+			// TUKA ZASTANAV
+			boolean store = false;
+			for (int j = 0; j < ins.defs().size(); j++) {
+				MemTemp newT = new MemTemp();
+				if (ins.defs().get(j) == t) {
+					defs.set(j, newT);
+					store = true;
+				}
+			}
+			newInstr.add(new AsmOPER(ins.instr(), uses, defs, jumps));
+
+			if (store) {
+				MemTemp newT = defs.get(0);
+				MemTemp newT1 = new MemTemp();
+				Vector<MemTemp> uses1 = new Vector<MemTemp>();
+				Vector<MemTemp> defs1 = new Vector<MemTemp>();
+				uses1.add(newT);
+				uses1.add(newT1);
+				defs1.add(newT1);
+				newInstr.add(new AsmOPER("ADD `d0, $254, " + Long.toString(br + code.frame.locsSize + 2 * 8), null,
+						defs1, null));
+				newInstr.add(new AsmOPER("STO `s0, `s1, 0", uses1, null, null));
+			}
+		}
+	}
+
 	public void Colour() {
 		while (!ss.empty()) {
 			int top = ss.pop();
@@ -318,7 +372,9 @@ public class RegAll extends Phase {
 					}
 					if (colour.get(i) == -10) {
 						System.out.println("ZA SPILL: " + i);
+						Replace(code, i2t.get(i));
 					}
+
 				}
 			}
 		}
