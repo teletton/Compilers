@@ -74,8 +74,9 @@ public class RegAll extends Phase {
 		t2i.clear();
 		i2t.clear();
 		all.clear();
+		br = 0;
 		LiveAn livean = new LiveAn();
-		livean.analysis();
+		livean.PartAnalysis(code);
 
 		MemTemp fp = code.frame.FP;
 		if (!t2i.containsKey(fp)) {
@@ -223,8 +224,8 @@ public class RegAll extends Phase {
 					MemTemp newT = new MemTemp();
 					Vector<MemTemp> uses1 = new Vector<MemTemp>();
 					Vector<MemTemp> defs1 = new Vector<MemTemp>();
-					uses.add(newT);
-					defs.add(newT);
+					uses1.add(newT);
+					defs1.add(newT);
 					newInstr.add(new AsmOPER("ADD `d0, $254, " + Long.toString(br + code.frame.locsSize + 2 * 8), null,
 							defs1, null));
 					newInstr.add(new AsmOPER("LDO `d0, `s0, 0", uses1, defs1, null));
@@ -256,21 +257,31 @@ public class RegAll extends Phase {
 				newInstr.add(new AsmOPER("STO `s0, `s1, 0", uses1, null, null));
 			}
 		}
+		code.instrs.clear();
+		for (AsmInstr instr : newInstr) {
+			code.instrs.add(instr);
+		}
 	}
 
-	public void Colour() {
+	public void Colour(Code code) {
 		while (!ss.empty()) {
 			int top = ss.pop();
 			Vector<Boolean> visCol = new Vector<Boolean>();
 			for (int i = 0; i < numreg; i++) {
 				visCol.add(false);
 			}
+			if (top == t2i.get(code.frame.FP)) {
+				colour.set(top, 254);
+				continue;
+			}
 
 			for (Integer x : graf.get(top)) {
 				// System.out.print(x + " ");
 				if (colour.get(x) >= 0) {
 					// System.out.println(x + " IMA BOJA " + colour.get(x));
-					visCol.set(colour.get(x), true);
+					if (colour.get(x) != 254) {
+						visCol.set(colour.get(x), true);
+					}
 				}
 			}
 			// System.out.println();
@@ -289,7 +300,7 @@ public class RegAll extends Phase {
 	public void allocateCode(Code code) {
 		boolean zavrseno = false;
 		while (!zavrseno) {
-			System.out.println("VLEZE");
+			// System.out.println("VLEZE");
 			initialization(code);
 			boolean isSimplyfied = false;
 			while (!isSimplyfied) {
@@ -332,7 +343,7 @@ public class RegAll extends Phase {
 			for (int i = 0; i < numOfTem; i++) {
 				if (deg.get(i) != 0) {
 					ok = false;
-					System.out.println("THERE IS SOME PROBLEM");
+					// System.out.println("THERE IS SOME PROBLEM");
 				}
 
 				if (vis.get(i) == 0) {
@@ -341,10 +352,10 @@ public class RegAll extends Phase {
 			}
 
 			if (!ok) {
-				System.out.println("THERE IS SOME PROBLEM");
+				// System.out.println("THERE IS SOME PROBLEM");
 			}
-
-			Colour();
+			colour.set(t2i.get(code.frame.FP), 254);
+			Colour(code);
 
 			boolean finished = true;
 			for (int i = 0; i < numOfTem; i++) {
@@ -353,14 +364,7 @@ public class RegAll extends Phase {
 				}
 			}
 			if (finished) {
-				for (int i = 0; i < numOfTem; i++) {
-					for (Integer x : graf.get(i)) {
-						if (colour.get(i) == colour.get(x)) {
-							System.out.println("SAME COLOURS");
-						}
-					}
-				}
-				colour.set(t2i.get(code.frame.FP), 254);
+
 				for (int i = 0; i < numOfTem; i++) {
 					tempToReg.put(i2t.get(i), colour.get(i));
 				}
@@ -368,21 +372,23 @@ public class RegAll extends Phase {
 			} else {
 				for (int i = 0; i < numOfTem; i++) {
 					if (colour.get(i) == -1) {
-						System.out.println("Not visited node");
+						// System.out.println("Not visited node");
 					}
 					if (colour.get(i) == -10) {
-						System.out.println("ZA SPILL: " + i);
+						// System.out.println("ZA SPILL: " + i + "temp = " + i2t.get(i));
 						Replace(code, i2t.get(i));
 					}
 
 				}
+				Code newCode = new Code(code.frame, code.entryLabel, code.exitLabel, code.instrs);
+				code = newCode;
 			}
 		}
 
 	}
 
 	public void allocate() {
-		System.out.println(numreg);
+		// System.out.println(numreg);
 
 		for (int i = 0; i < AsmGen.codes.size(); i++) {
 			allocateCode(AsmGen.codes.get(i));
