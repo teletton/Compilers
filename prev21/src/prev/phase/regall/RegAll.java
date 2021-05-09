@@ -42,7 +42,7 @@ public class RegAll extends Phase {
 
 	/** Mapping of temporary variables to registers. */
 	public final HashMap<MemTemp, Integer> tempToReg = new HashMap<MemTemp, Integer>();
-	public int numreg = 8;
+	public int numreg;
 	Vector<Vector<Integer>> graf = new Vector<Vector<Integer>>();
 	Vector<Integer> deg = new Vector<Integer>();
 	PriorityQueue<Pair> pq = new PriorityQueue<Pair>();
@@ -233,19 +233,36 @@ public class RegAll extends Phase {
 	}
 
 	public void allocateCode(Code code) {
-		System.out.println("VLEZE");
-		initialization(code);
-		boolean isSimplyfied = false;
-		while (!isSimplyfied) {
-			while (!pq.isEmpty()) {
-				Pair p = pq.poll();
-				if (p.first != deg.get(p.second) || vis.get(p.second) == 1)
-					continue;
-				if (p.first >= numreg) {
-					pq.add(p);
-					break;
+		boolean zavrseno = false;
+		while (!zavrseno) {
+			System.out.println("VLEZE");
+			initialization(code);
+			boolean isSimplyfied = false;
+			while (!isSimplyfied) {
+				while (!pq.isEmpty()) {
+					Pair p = pq.poll();
+					if (p.first != deg.get(p.second) || vis.get(p.second) == 1)
+						continue;
+					if (p.first >= numreg) {
+						pq.add(p);
+						break;
+					}
+					int x = p.second;
+					for (Integer y : graf.get(x)) {
+						if (vis.get(y) == 0) {
+							deg.set(x, deg.get(x) - 1);
+							deg.set(y, deg.get(y) - 1);
+							pq.add(new Pair(deg.get(y), y));
+						}
+					}
+					ss.add(x);
+					vis.set(x, 1);
 				}
-				int x = p.second;
+				if (pq.isEmpty())
+					isSimplyfied = true;
+				if (isSimplyfied)
+					break;
+				int x = pq.peek().second;
 				for (Integer y : graf.get(x)) {
 					if (vis.get(y) == 0) {
 						deg.set(x, deg.get(x) - 1);
@@ -254,68 +271,67 @@ public class RegAll extends Phase {
 					}
 				}
 				ss.add(x);
+				spill.add(x);
 				vis.set(x, 1);
 			}
-			if (pq.isEmpty())
-				isSimplyfied = true;
-			if (isSimplyfied)
-				break;
-			int x = pq.peek().second;
-			for (Integer y : graf.get(x)) {
-				if (vis.get(y) == 0) {
-					deg.set(x, deg.get(x) - 1);
-					deg.set(y, deg.get(y) - 1);
-					pq.add(new Pair(deg.get(y), y));
+			boolean ok = true;
+			for (int i = 0; i < numOfTem; i++) {
+				if (deg.get(i) != 0) {
+					ok = false;
+					System.out.println("THERE IS SOME PROBLEM");
+				}
+
+				if (vis.get(i) == 0) {
+					ok = false;
 				}
 			}
-			ss.add(x);
-			spill.add(x);
-			vis.set(x, 1);
-		}
-		boolean ok = true;
-		for (int i = 0; i < numOfTem; i++) {
-			if (deg.get(i) != 0) {
-				ok = false;
-				// System.out.println("THERE IS SOME PROBLEM");
+
+			if (!ok) {
+				System.out.println("THERE IS SOME PROBLEM");
 			}
 
-			if (vis.get(i) == 0) {
-				ok = false;
-			}
-		}
+			Colour();
 
-		if (!ok) {
-			// System.out.println("THERE IS SOME PROBLEM");
-		}
-
-		Colour();
-
-		boolean finished = true;
-		for (int i = 0; i < numOfTem; i++) {
-			if (colour.get(i) < 0) {
-				finished = false;
-			}
-		}
-		if (finished) {
+			boolean finished = true;
 			for (int i = 0; i < numOfTem; i++) {
-				for (Integer x : graf.get(i)) {
-					if (colour.get(i) == colour.get(x)) {
-						System.out.println("SAME COLOURS");
+				if (colour.get(i) < 0) {
+					finished = false;
+				}
+			}
+			if (finished) {
+				for (int i = 0; i < numOfTem; i++) {
+					for (Integer x : graf.get(i)) {
+						if (colour.get(i) == colour.get(x)) {
+							System.out.println("SAME COLOURS");
+						}
+					}
+				}
+				colour.set(t2i.get(code.frame.FP), 254);
+				for (int i = 0; i < numOfTem; i++) {
+					tempToReg.put(i2t.get(i), colour.get(i));
+				}
+				break;
+			} else {
+				for (int i = 0; i < numOfTem; i++) {
+					if (colour.get(i) == -1) {
+						System.out.println("Not visited node");
+					}
+					if (colour.get(i) == -10) {
+						System.out.println("ZA SPILL: " + i);
 					}
 				}
 			}
-			colour.set(t2i.get(code.frame.FP), 254);
-			for (int i = 0; i < numOfTem; i++) {
-				tempToReg.put(i2t.get(i), colour.get(i));
-			}
 		}
+
 	}
 
 	public void allocate() {
+		System.out.println(numreg);
+
 		for (int i = 0; i < AsmGen.codes.size(); i++) {
-			// System.out.println("VLEZE" + i);
 			allocateCode(AsmGen.codes.get(i));
 		}
+
 	}
 
 	public void log() {

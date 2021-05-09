@@ -218,6 +218,7 @@ public class Compiler {
 
 				// Register allocation.
 				try (RegAll regall = new RegAll()) {
+					regall.numreg = numofregs;
 					regall.allocate();
 					regall.log();
 				}
