@@ -15,6 +15,7 @@ import prev.phase.imclin.*;
 import prev.phase.asmgen.*;
 import prev.phase.livean.*;
 import prev.phase.regall.*;
+import prev.phase.mmix.*;
 import prev.data.mem.*;
 
 /**
@@ -25,7 +26,7 @@ public class Compiler {
 	// COMMAND LINE ARGUMENTS
 
 	/** All valid phases of the compiler. */
-	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen|imclin|asmgen|livean|regall";
+	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen|imclin|asmgen|livean|regall|mmix";
 
 	/** Values of command line arguments. */
 	private static HashMap<String, String> cmdLine = new HashMap<String, String>();
@@ -193,9 +194,8 @@ public class Compiler {
 					Abstr.tree.accept(new ChunkGenerator(), 0);
 					imclin.log();
 
-					// Interpreter interpreter = new Interpreter(ImcLin.dataChunks(),
-					// ImcLin.codeChunks());
-					// System.out.println("EXIT CODE: " + interpreter.run("_main"));
+					Interpreter interpreter = new Interpreter(ImcLin.dataChunks(), ImcLin.codeChunks());
+					System.out.println("EXIT CODE: " + interpreter.run("_main"));
 				}
 				if (Compiler.cmdLineArgValue("--target-phase").equals("imclin"))
 					break;
@@ -217,12 +217,22 @@ public class Compiler {
 					break;
 
 				// Register allocation.
+				HashMap<MemTemp, Integer> hm;
 				try (RegAll regall = new RegAll()) {
 					regall.numreg = numofregs;
 					regall.allocate();
+					hm = regall.tempToReg;
 					regall.log();
 				}
 				if (Compiler.cmdLineArgValue("--target-phase").equals("regall"))
+					break;
+
+				try (Mmix mmixa = new Mmix()) {
+					mmixa.regs = hm;
+					mmixa.finish();
+				}
+
+				if (cmdLine.get("--target-phase").equals("mmix"))
 					break;
 
 			}

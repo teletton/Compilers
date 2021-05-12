@@ -25,7 +25,7 @@ if make -C src/prev/phase parser SEP=$SEP ; then
 		echo -------
 		echo test1
 		echo -------
-		make -C prg/ ${1:-'test5'} PHASE=parser SEP=$SEP
+		make -C prg/ ${1:-'test1'} PHASE=parser SEP=$SEP
 		echo -------
 		echo test2
 		echo -------

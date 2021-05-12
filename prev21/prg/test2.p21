@@ -1,6 +1,6 @@
-fun exit():void
+#fun exit():void
 fun putChar(c:char):void
-fun getChar():char
+#fun getChar():char
 
 fun putInt(i:int):void =
     {
@@ -18,27 +18,27 @@ fun putInt(i:int):void =
           }
     }
 
-fun getInt():int =
-    {
-      sign=1;
-      val=0;
-      c = getChar();
-      if (c=='+') then { sign=+1; c='0'; } else
-      if (c=='-') then { sign=-1; c='0'; } else
-      if (c<'0')|(c>'9') then exit() else none;
-      while ('0'<=c)&(c<='9') do {
-        val=val*10+((c:int)-('0':int));
-        c=getChar();
-      };
-      if (c!=(10:char)) then exit() else none;
-      sign * val;
-    }
-    where
-    {
-      var sign:int
-      var val:int
-      var c:char
-    }
+#fun getInt():int =
+#    {
+#      sign=1;
+#      val=0;
+#      c = getChar();
+#      if (c=='+') then { sign=+1; c='0'; } else
+#      if (c=='-') then { sign=-1; c='0'; } else
+#      if (c<'0')|(c>'9') then exit() else none;
+#      while ('0'<=c)&(c<='9') do {
+#        val=val*10+((c:int)-('0':int));
+#        c=getChar();
+#      };
+#      if (c!=(10:char)) then exit() else none;
+#      sign * val;
+#    }
+#    where
+#    {
+#      var sign:int
+#      var val:int
+#      var c:char
+#    }
 
 fun putString(s:^char):void =
     {
@@ -46,8 +46,7 @@ fun putString(s:^char):void =
       while (((s:int)+(i*8):^char)^!=(0:char)) do {
         putChar(((s:int)+(i*8):^char)^);
         i=i+1;
-      };
-      none;
+      };      none;
     }
     where
     {
@@ -81,10 +80,17 @@ fun combs(i:int,n:int,ns:^([32]int)):void =
 
 fun main():int =
     {
+      putString("TUKA");
+      putChar((10:char));
+      putInt(92);
+      putChar((10:char));
       n=4;
       {
+        putChar('A');
         i=0;
+        putChar('A');
         while i<n do {
+          
           ns[i]=i;
           i=i+1;
         };

@@ -72,7 +72,7 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 			u.add(s0);
 			Vector<MemTemp> d = new Vector<MemTemp>();
 			d.add(d0);
-			AsmOPER ao = new AsmMOVE("OR `d0,`s0,0", u, d);
+			AsmOPER ao = new AsmOPER("OR `d0,`s0,0", u, d, null);
 			ins.add(ao);
 		}
 		return ins;

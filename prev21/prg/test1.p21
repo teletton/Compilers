@@ -1,7 +1,7 @@
 fun putChar(c:char):void
-
 fun putString(s:^char):void =
     {
+
       i=0;
       while (((s:int)+(i*8):^char)^!=(0:char)) do {
         putChar(((s:int)+(i*8):^char)^);
@@ -15,5 +15,5 @@ fun putString(s:^char):void =
 
 fun main():int =
     { putString("Hello, world.");
-      putChar((10:char));
+      putChar('O');
       0; }

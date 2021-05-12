@@ -270,16 +270,12 @@ public class RegAll extends Phase {
 			for (int i = 0; i < numreg; i++) {
 				visCol.add(false);
 			}
-			if (top == t2i.get(code.frame.FP)) {
-				colour.set(top, 254);
-				continue;
-			}
 
 			for (Integer x : graf.get(top)) {
 				// System.out.print(x + " ");
 				if (colour.get(x) >= 0) {
 					// System.out.println(x + " IMA BOJA " + colour.get(x));
-					if (colour.get(x) != 254) {
+					if (colour.get(x) != 253) {
 						visCol.set(colour.get(x), true);
 					}
 				}
@@ -354,7 +350,7 @@ public class RegAll extends Phase {
 			if (!ok) {
 				// System.out.println("THERE IS SOME PROBLEM");
 			}
-			colour.set(t2i.get(code.frame.FP), 254);
+			colour.set(t2i.get(code.frame.FP), 253);
 			Colour(code);
 
 			boolean finished = true;
@@ -375,7 +371,7 @@ public class RegAll extends Phase {
 						// System.out.println("Not visited node");
 					}
 					if (colour.get(i) == -10) {
-						// System.out.println("ZA SPILL: " + i + "temp = " + i2t.get(i));
+						System.out.println("ZA SPILL: " + i + "temp = " + i2t.get(i));
 						Replace(code, i2t.get(i));
 					}
 
