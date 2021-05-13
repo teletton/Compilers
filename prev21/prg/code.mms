@@ -63,14 +63,13 @@ L5              	OR	$0,$0,0
                 	INCL	$1,8
                 	OR	$1,$1,0
                 	SUB	$1,$2,$1
+                	OR	$2,$1,0
+                	SETH	$1,0
+                	INCMH	$1,0
+                	INCML	$1,0
+                	INCL	$1,0
                 	OR	$1,$1,0
-                	SETH	$2,0
-                	INCMH	$2,0
-                	INCML	$2,0
-                	INCL	$2,0
-                	OR	$2,$2,0
-                	LDO	$1,$1,0
-                	STO	$2,$1,0
+                	STO	$1,$2,0
 L1              	OR	$0,$0,0
                 	OR	$2,$253,0
                 	SETH	$1,0
@@ -134,8 +133,7 @@ L2              	OR	$0,$0,0
                 	OR	$0,$0,0
                 	ADD	$0,$1,$0
                 	OR	$0,$0,0
-                	LDO	$1,$2,0
-                	STO	$0,$1,0
+                	STO	$0,$2,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0

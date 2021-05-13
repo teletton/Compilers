@@ -158,7 +158,8 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 
 	@Override
 	public MemTemp visit(ImcMEM mem, Vector<AsmInstr> visArg) {
-		MemTemp s0 = mem.addr.accept(this, visArg);
+		Vector<AsmInstr> vv = new Vector<AsmInstr>();
+		MemTemp s0 = mem.addr.accept(this, vv);
 		Vector<AsmInstr> vis = sis.pop();
 		MemTemp d0 = new MemTemp();
 		Vector<MemTemp> u = new Vector<MemTemp>();
@@ -167,6 +168,11 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 		u.add(s0);
 		d.add(d0);
 		ins.addAll(vis);
+		if (visArg.size() > 0) {
+			sis.add(ins);
+			return s0;
+		}
+
 		AsmOPER ao = new AsmOPER("LDO `d0,`s0,0", u, d, null);
 		ins.add(ao);
 		sis.add(ins);

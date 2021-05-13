@@ -53,7 +53,12 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 	public Vector<AsmInstr> visit(ImcMOVE move, Object visArg) {
 		Vector<AsmInstr> inn = new Vector<AsmInstr>();
 		ExprGenerator eg = new ExprGenerator();
+		if (move.dst instanceof ImcMEM) {
+			inn.add(new AsmOPER("", null, null, null));
+		}
 		MemTemp d0 = move.dst.accept(eg, inn);
+		inn.clear();
+		inn = new Vector<AsmInstr>();
 		Vector<AsmInstr> vis1 = eg.sis.pop();
 		ExprGenerator eg1 = new ExprGenerator();
 		MemTemp s0 = move.src.accept(eg1, inn);
