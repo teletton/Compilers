@@ -79,10 +79,14 @@ public class RegAll extends Phase {
 		LiveAn livean = new LiveAn();
 		livean.PartAnalysis(code);
 
-		/*
-		 * MemTemp fp = code.frame.FP; if (!t2i.containsKey(fp)) { t2i.put(fp,
-		 * numOfTem); i2t.put(numOfTem, fp); numOfTem++; }
-		 */
+
+		  MemTemp fp = code.frame.FP;
+		  if (!t2i.containsKey(fp)) {
+		  	t2i.put(fp, numOfTem);
+		  	i2t.put(numOfTem, fp);
+		  	numOfTem++;
+		  }
+
 		for (int i = 0; i < code.instrs.size(); i++) {
 			for (MemTemp j : code.instrs.get(i).uses()) {
 				if (t2i.containsKey(j))
@@ -125,13 +129,8 @@ public class RegAll extends Phase {
 			}
 		}
 
-		System.out.println("VLEZE");
-		if (!t2i.containsKey(code.frame.FP)) {
-			t2i.put(code.frame.FP, numOfTem);
-			i2t.put(numOfTem, code.frame.FP);
-			numOfTem++;
-		}
-		System.out.println(t2i.get(code.frame.FP));
+		// System.out.println("VLEZE");
+		// System.out.println(t2i.get(code.frame.FP));
 
 		for (int i = 0; i < numOfTem; i++) {
 			deg.add(0);
@@ -232,7 +231,7 @@ public class RegAll extends Phase {
 					Vector<MemTemp> defs1 = new Vector<MemTemp>();
 					uses1.add(newT);
 					defs1.add(newT);
-					newInstr.add(new AsmOPER("ADD `d0, $254, " + Long.toString(br + code.frame.locsSize + 2 * 8), null,
+					newInstr.add(new AsmOPER("ADD `d0, $253, " + Long.toString(br + code.frame.locsSize + 2 * 8), null,
 							defs1, null));
 					newInstr.add(new AsmOPER("LDO `d0, `s0, 0", uses1, defs1, null));
 					uses.set(j, newT);
@@ -258,7 +257,7 @@ public class RegAll extends Phase {
 				uses1.add(newT);
 				uses1.add(newT1);
 				defs1.add(newT1);
-				newInstr.add(new AsmOPER("ADD `d0, $254, " + Long.toString(br + code.frame.locsSize + 2 * 8), null,
+				newInstr.add(new AsmOPER("ADD `d0, $253, " + Long.toString(br + code.frame.locsSize + 2 * 8), null,
 						defs1, null));
 				newInstr.add(new AsmOPER("STO `s0, `s1, 0", uses1, null, null));
 			}
@@ -276,20 +275,16 @@ public class RegAll extends Phase {
 			for (int i = 0; i < numreg; i++) {
 				visCol.add(false);
 			}
-			System.out.println(code.frame.FP);
-			System.out.println(top);
-			System.out.println(t2i.get(code.frame.FP));
-			if (top == t2i.get(code.frame.FP)) {
-				System.out.println("VO RED E");
-				colour.set(top, 253);
-			}
+			// System.out.println(code.frame.FP);
+			// System.out.println(top);
+			// System.out.println(t2i.get(code.frame.FP));
+
 			for (Integer x : graf.get(top)) {
 				// System.out.print(x + " ");
 				if (colour.get(x) >= 0) {
 					// System.out.println(x + " IMA BOJA " + colour.get(x));
-					if (colour.get(x) != 253) {
 						visCol.set(colour.get(x), true);
-					}
+
 				}
 			}
 			// System.out.println();
@@ -301,7 +296,6 @@ public class RegAll extends Phase {
 				}
 			}
 			// System.out.println("BROJ + " + top + " BOJA = " + colo);
-			if (colour.get(top) != 253)
 				colour.set(top, colo);
 		}
 	}
@@ -363,7 +357,7 @@ public class RegAll extends Phase {
 			if (!ok) {
 				// System.out.println("THERE IS SOME PROBLEM");
 			}
-			// colour.set(t2i.get(code.frame.FP), 253);
+
 			Colour(code);
 
 			boolean finished = true;
@@ -373,12 +367,13 @@ public class RegAll extends Phase {
 				}
 			}
 			if (finished) {
-
+				colour.set(t2i.get(code.frame.FP), 253);
 				for (int i = 0; i < numOfTem; i++) {
 					tempToReg.put(i2t.get(i), colour.get(i));
 				}
 				break;
 			} else {
+				System.out.println("CE SPILLLA");
 				for (int i = 0; i < numOfTem; i++) {
 					if (colour.get(i) == -1) {
 						// System.out.println("Not visited node");
@@ -406,6 +401,31 @@ public class RegAll extends Phase {
 	}
 
 	public void log() {
+		/*
+		 * if (logger == null) return; for (Code code : AsmGen.codes) {
+		 * logger.begElement("code"); logger.addAttribute("entrylabel",
+		 * code.entryLabel.name); logger.addAttribute("exitlabel", code.exitLabel.name);
+		 * logger.addAttribute("tempsize", Long.toString(code.tempSize));
+		 * code.frame.log(logger); logger.begElement("instructions"); for (AsmInstr
+		 * instr : code.instrs) { logger.begElement("instruction");
+		 * logger.addAttribute("code", instr.toString(tempToReg));
+		 * logger.begElement("temps"); logger.addAttribute("name", "use");
+		 * 
+		 * for (MemTemp temp : instr.uses()) { logger.begElement("temp");
+		 * logger.addAttribute("name", temp.toString()); logger.endElement(); }
+		 * logger.endElement(); logger.begElement("temps"); logger.addAttribute("name",
+		 * "def"); for (MemTemp temp : instr.defs()) { logger.begElement("temp");
+		 * logger.addAttribute("name", temp.toString()); logger.endElement(); }
+		 * logger.endElement(); logger.begElement("temps"); logger.addAttribute("name",
+		 * "in"); for (MemTemp temp : instr.in()) { logger.begElement("temp");
+		 * logger.addAttribute("name", temp.toString()); logger.endElement(); }
+		 * logger.endElement(); logger.begElement("temps"); logger.addAttribute("name",
+		 * "out"); for (MemTemp temp : instr.out()) { logger.begElement("temp");
+		 * logger.addAttribute("name", temp.toString()); logger.endElement(); }
+		 * logger.endElement(); logger.endElement();
+		 * 
+		 * } logger.endElement(); logger.endElement(); }
+		 */
 		if (logger == null)
 			return;
 		for (Code code : AsmGen.codes) {
@@ -418,41 +438,7 @@ public class RegAll extends Phase {
 			for (AsmInstr instr : code.instrs) {
 				logger.begElement("instruction");
 				logger.addAttribute("code", instr.toString(tempToReg));
-				logger.begElement("temps");
-				logger.addAttribute("name", "use");
-
-				for (MemTemp temp : instr.uses()) {
-					logger.begElement("temp");
-					logger.addAttribute("name", temp.toString());
-					logger.endElement();
-				}
 				logger.endElement();
-				logger.begElement("temps");
-				logger.addAttribute("name", "def");
-				for (MemTemp temp : instr.defs()) {
-					logger.begElement("temp");
-					logger.addAttribute("name", temp.toString());
-					logger.endElement();
-				}
-				logger.endElement();
-				logger.begElement("temps");
-				logger.addAttribute("name", "in");
-				for (MemTemp temp : instr.in()) {
-					logger.begElement("temp");
-					logger.addAttribute("name", temp.toString());
-					logger.endElement();
-				}
-				logger.endElement();
-				logger.begElement("temps");
-				logger.addAttribute("name", "out");
-				for (MemTemp temp : instr.out()) {
-					logger.begElement("temp");
-					logger.addAttribute("name", temp.toString());
-					logger.endElement();
-				}
-				logger.endElement();
-				logger.endElement();
-
 			}
 			logger.endElement();
 			logger.endElement();

@@ -2,6 +2,8 @@ fun putChar(c:char):void
 fun putString(s:^char):void =
     {
 
+      #putChar(((s:int):^char)^);
+      #putChar((10:char));
       i=0;
       while (((s:int)+(i*8):^char)^!=(0:char)) do {
         putChar(((s:int)+(i*8):^char)^);

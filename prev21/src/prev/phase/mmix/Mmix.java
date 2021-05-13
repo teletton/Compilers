@@ -56,6 +56,9 @@ public class Mmix extends Phase {
                     }
                 }
             } else { /// string constant
+                for (int j = 0; j < ImcLin.dataChunks().get(i).init.length(); j++) {
+                    System.out.println(ImcLin.dataChunks().get(i).init.charAt(j));
+                }
                 for (int j = 1; j < ImcLin.dataChunks().get(i).init.length() - 1; j++) {
                     if (j == 1) {
                         file.printf(f, ImcLin.dataChunks().get(i).label.name, "BYTE",
