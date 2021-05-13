@@ -1,5 +1,6 @@
-
-fun putChar(c:char):void
+fun exit():void = none
+fun putChar(c:char):void = none
+fun getChar():char = (0:char)
 
 typ integer=int
 typ boolean=bool
@@ -20,8 +21,42 @@ fun putInteger(i:integer):void =
           }
     }
 
+fun getInteger():integer =
+    {
+      sign=1;
+      val=0;
+      c = getChar();
+      if (c=='+') then { sign=+1; c='0'; } else
+      if (c=='-') then { sign=-1; c='0'; } else
+      if (c<'0')|(c>'9') then exit() else none;
+      while ('0'<=c)&(c<='9') do {
+        val=val*10+((c:integer)-('0':integer));
+        c=getChar();
+      };
+      if (c!=(10:char)) then exit() else none;
+      sign * val;
+    }
+    where
+    {
+      var sign:integer
+      var val:integer
+      var c:char
+    }
 
-fun putString(s:^char):void 
+fun putString(s:^char):void =
+    {
+      i=0;
+      while (((s:integer)+(i*8):^char)^!=(0:char)) do {
+        putChar(((s:integer)+(i*8):^char)^);
+        i=i+1;
+      };
+      none;
+    }
+    where
+    {
+      var i:integer
+    }
+
 #---------------------------------------------------------------
 
 fun queens(i:integer,n:integer,qs:^[32]integer):integer =
@@ -34,7 +69,7 @@ fun queens(i:integer,n:integer,qs:^[32]integer):integer =
           while j<n do {
             i=0;
             while i<n do {
-              putChar({if qs^[i]==j then c='O' else c='.'; c;}
+              putChar({if qs^[i]==j then c='O' else c='.'; c; }
                       where { var c:char });
               i=i+1;
             };
@@ -64,8 +99,6 @@ fun queens(i:integer,n:integer,qs:^[32]integer):integer =
             j=j+1;
           };
         };
-      #putInteger(all);
-      #putChar((10:char));
       all;
     }
     where
