@@ -75,15 +75,14 @@ public class RegAll extends Phase {
 		i2t.clear();
 		all.clear();
 		br = 0;
+		numOfTem = 0;
 		LiveAn livean = new LiveAn();
 		livean.PartAnalysis(code);
 
-		MemTemp fp = code.frame.FP;
-		if (!t2i.containsKey(fp)) {
-			t2i.put(fp, numOfTem);
-			i2t.put(numOfTem, fp);
-			numOfTem++;
-		}
+		/*
+		 * MemTemp fp = code.frame.FP; if (!t2i.containsKey(fp)) { t2i.put(fp,
+		 * numOfTem); i2t.put(numOfTem, fp); numOfTem++; }
+		 */
 		for (int i = 0; i < code.instrs.size(); i++) {
 			for (MemTemp j : code.instrs.get(i).uses()) {
 				if (t2i.containsKey(j))
@@ -126,13 +125,20 @@ public class RegAll extends Phase {
 			}
 		}
 
+		System.out.println("VLEZE");
+		if (!t2i.containsKey(code.frame.FP)) {
+			t2i.put(code.frame.FP, numOfTem);
+			i2t.put(numOfTem, code.frame.FP);
+			numOfTem++;
+		}
+		System.out.println(t2i.get(code.frame.FP));
+
 		for (int i = 0; i < numOfTem; i++) {
 			deg.add(0);
 			colour.add(-1);
 			graf.add(new Vector<Integer>());
 			vis.add(0);
 		}
-
 		for (int i = 0; i < code.instrs.size(); i++) {
 			for (MemTemp m1 : code.instrs.get(i).in()) {
 				for (MemTemp m2 : code.instrs.get(i).in()) {
@@ -270,7 +276,13 @@ public class RegAll extends Phase {
 			for (int i = 0; i < numreg; i++) {
 				visCol.add(false);
 			}
-
+			System.out.println(code.frame.FP);
+			System.out.println(top);
+			System.out.println(t2i.get(code.frame.FP));
+			if (top == t2i.get(code.frame.FP)) {
+				System.out.println("VO RED E");
+				colour.set(top, 253);
+			}
 			for (Integer x : graf.get(top)) {
 				// System.out.print(x + " ");
 				if (colour.get(x) >= 0) {
@@ -289,7 +301,8 @@ public class RegAll extends Phase {
 				}
 			}
 			// System.out.println("BROJ + " + top + " BOJA = " + colo);
-			colour.set(top, colo);
+			if (colour.get(top) != 253)
+				colour.set(top, colo);
 		}
 	}
 
@@ -350,7 +363,7 @@ public class RegAll extends Phase {
 			if (!ok) {
 				// System.out.println("THERE IS SOME PROBLEM");
 			}
-			colour.set(t2i.get(code.frame.FP), 253);
+			// colour.set(t2i.get(code.frame.FP), 253);
 			Colour(code);
 
 			boolean finished = true;
@@ -407,6 +420,7 @@ public class RegAll extends Phase {
 				logger.addAttribute("code", instr.toString(tempToReg));
 				logger.begElement("temps");
 				logger.addAttribute("name", "use");
+
 				for (MemTemp temp : instr.uses()) {
 					logger.begElement("temp");
 					logger.addAttribute("name", temp.toString());
@@ -438,6 +452,7 @@ public class RegAll extends Phase {
 				}
 				logger.endElement();
 				logger.endElement();
+
 			}
 			logger.endElement();
 			logger.endElement();

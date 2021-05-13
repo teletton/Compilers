@@ -56,7 +56,7 @@ _putString      	SETL	$0,8
                 	JMP	L5
                 	GREG	@
 L5              	OR	$0,$0,0
-                	OR	$1,$4,0
+                	OR	$1,$253,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -72,7 +72,7 @@ L5              	OR	$0,$0,0
                 	LDO	$0,$0,0
                 	STO	$1,$0,0
 L1              	OR	$0,$0,0
-                	OR	$1,$4,0
+                	OR	$1,$253,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -82,7 +82,7 @@ L1              	OR	$0,$0,0
                 	OR	$0,$0,0
                 	LDO	$0,$0,0
                 	OR	$2,$0,0
-                	OR	$1,$4,0
+                	OR	$1,$253,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -128,7 +128,7 @@ L2              	OR	$0,$0,0
                 	INCML	$0,0
                 	INCL	$0,0
                 	OR	$3,$0,0
-                	OR	$1,$4,0
+                	OR	$1,$253,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -138,7 +138,7 @@ L2              	OR	$0,$0,0
                 	OR	$0,$0,0
                 	LDO	$0,$0,0
                 	OR	$2,$0,0
-                	OR	$1,$4,0
+                	OR	$1,$253,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -164,7 +164,7 @@ L2              	OR	$0,$0,0
                 	PUSHJ	$8,_putChar
                 	LDO	$0,$254,0
                 	OR	$0,$0,0
-                	OR	$1,$4,0
+                	OR	$1,$253,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -172,7 +172,7 @@ L2              	OR	$0,$0,0
                 	OR	$0,$0,0
                 	SUB	$0,$1,$0
                 	OR	$0,$0,0
-                	OR	$2,$4,0
+                	OR	$2,$253,0
                 	SETH	$1,0
                 	INCMH	$1,0
                 	INCML	$1,0
