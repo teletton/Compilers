@@ -61,14 +61,14 @@ public class Mmix extends Phase {
                 }
                 for (int j = 1; j < ImcLin.dataChunks().get(i).init.length() - 1; j++) {
                     if (j == 1) {
-                        file.printf(f, ImcLin.dataChunks().get(i).label.name, "BYTE",
+                        file.printf(f, ImcLin.dataChunks().get(i).label.name, "OCTA",
                                 Integer.toString((int) ImcLin.dataChunks().get(i).init.charAt(j)));
                     } else {
-                        file.printf(f, "", "BYTE", Integer.toString((int) ImcLin.dataChunks().get(i).init.charAt(j)));
+                        file.printf(f, "", "OCTA", Integer.toString((int) ImcLin.dataChunks().get(i).init.charAt(j)));
                     }
                 }
 
-                file.printf(f, "", "BYTE", "0");
+                file.printf(f, "", "OCTA", "0");
             }
         }
         file.printf("\n");

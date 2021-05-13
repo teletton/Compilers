@@ -2,14 +2,20 @@ fun putChar(c:char):void
 fun putString(s:^char):void =
     {
 
-      #putChar(((s:int):^char)^);
+     # putChar(((s:int):^char)^);
       #putChar((10:char));
+      #i=0;
+      #while (((s:int)+(i*8):^char)^!=(0:char)) do {
+      #  putChar(((s:int)+(i*8):^char)^);
+      #  i=i+1;
+      #};
       i=0;
-      while (((s:int)+(i*8):^char)^!=(0:char)) do {
-        putChar(((s:int)+(i*8):^char)^);
+      while (i < 10) do {
+        putChar('p');
         i=i+1;
       };
-      none;
+
+     none;
     }
     where {
       var i:int
@@ -17,5 +23,5 @@ fun putString(s:^char):void =
 
 fun main():int =
     { putString("Hello, world.");
-      putChar('O');
+      putChar((10:char));
       0; }
