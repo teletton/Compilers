@@ -71,6 +71,8 @@ public class RegAll extends Phase {
 			boolean zavrseno = false;
 			while (!zavrseno) {
 				// System.out.println("VLEZE");
+				br = 0;
+				numOfTem = 0;
 				graf.clear();
 				ss.clear();
 				pq.clear();
@@ -79,8 +81,7 @@ public class RegAll extends Phase {
 				spill.clear();
 				t2i.clear();
 				i2t.clear();
-				br = 0;
-				numOfTem = 0;
+
 				LiveAn livean = new LiveAn();
 				livean.PartAnalysis(code);
 
@@ -93,9 +94,7 @@ public class RegAll extends Phase {
 
 				for (int i = 0; i < code.instrs.size(); i++) {
 					for (MemTemp j : code.instrs.get(i).uses()) {
-						if (t2i.containsKey(j))
-							continue;
-						else {
+						if (!t2i.containsKey(j)) {
 							t2i.put(j, numOfTem);
 							i2t.put(numOfTem, j);
 							numOfTem++;
@@ -103,9 +102,7 @@ public class RegAll extends Phase {
 					}
 
 					for (MemTemp j : code.instrs.get(i).defs()) {
-						if (t2i.containsKey(j))
-							continue;
-						else {
+						if (!t2i.containsKey(j)) {
 							t2i.put(j, numOfTem);
 							i2t.put(numOfTem, j);
 							numOfTem++;
@@ -113,9 +110,7 @@ public class RegAll extends Phase {
 					}
 
 					for (MemTemp j : code.instrs.get(i).in()) {
-						if (t2i.containsKey(j))
-							continue;
-						else {
+						if (!t2i.containsKey(j)) {
 							t2i.put(j, numOfTem);
 							i2t.put(numOfTem, j);
 							numOfTem++;
@@ -123,9 +118,7 @@ public class RegAll extends Phase {
 					}
 
 					for (MemTemp j : code.instrs.get(i).out()) {
-						if (t2i.containsKey(j))
-							continue;
-						else {
+						if (!t2i.containsKey(j)) {
 							t2i.put(j, numOfTem);
 							i2t.put(numOfTem, j);
 							numOfTem++;
@@ -216,8 +209,6 @@ public class RegAll extends Phase {
 						Pair p = pq.poll();
 						if (vis[p.second] == 1)
 							continue;
-						// if (p.first != deg.get(p.second) )
-						// continue;
 						if (p.first >= numreg) {
 							pq.add(p);
 							break;
@@ -234,8 +225,6 @@ public class RegAll extends Phase {
 						vis[x] = 1;
 					}
 					if (pq.isEmpty())
-						cc = true;
-					if (cc)
 						break;
 					int x = pq.peek().second;
 					for (Integer y : graf.get(x)) {
@@ -279,88 +268,11 @@ public class RegAll extends Phase {
 					col[top] = colo;
 				}
 
-				boolean konc = true;
 				for (int i = 0; i < numOfTem; i++) {
-					if (col[i] == -1 || col[i] == -10) {
-						konc = false;
-						break;
-					}
+					tempToReg.put(i2t.get(i), col[i]);
 				}
-				if (konc) {
+				break;
 
-					for (int i = 0; i < numOfTem; i++) {
-						tempToReg.put(i2t.get(i), col[i]);
-					}
-					break;
-				} else {
-					System.out.println("CE SPILLLA");
-					for (int i = 0; i < numOfTem; i++) {
-						if (col[i] == -10) {
-							System.out.println("ZA SPILL: " + i + "temp = " + i2t.get(i));
-							br += 8;
-							MemTemp t = i2t.get(i);
-							Vector<AsmInstr> newInstr = new Vector<AsmInstr>();
-							for (int ii = 0; ii < code.instrs.size(); ii++) {
-								if (code.instrs.get(ii) instanceof AsmLABEL) {
-									newInstr.add(code.instrs.get(ii));
-									continue;
-								}
-								AsmOPER ins = (AsmOPER) code.instrs.get(ii);
-								Vector<MemTemp> u = ins.uses();
-								Vector<MemTemp> d = ins.defs();
-								Vector<MemLabel> jmp = ins.jumps();
-
-								for (int j = 0; j < ins.uses().size(); j++) {
-									if (ins.uses().get(j) == t) {
-										MemTemp t1 = new MemTemp();
-										Vector<MemTemp> u1 = new Vector<MemTemp>();
-										Vector<MemTemp> d1 = new Vector<MemTemp>();
-										u1.add(t1);
-										d1.add(t1);
-										newInstr.add(new AsmOPER(
-												"ADD `d0,$254," + Long.toString(br + code.frame.locsSize + 2 * 8), null,
-												d1, null));
-										newInstr.add(new AsmOPER("LDO `d0,`s0,0", u1, d1, null));
-										u.set(j, t1);
-										break;
-									}
-								}
-								// TUKA ZASTANAV
-								boolean store = false;
-								for (int j = 0; j < ins.defs().size(); j++) {
-									MemTemp t2 = new MemTemp();
-									if (ins.defs().get(j) == t) {
-										d.set(j, t2);
-										store = true;
-									}
-								}
-								newInstr.add(new AsmOPER(ins.instr(), u, d, jmp));
-
-								if (store) {
-									MemTemp t1 = d.get(0);
-									MemTemp t2 = new MemTemp();
-									Vector<MemTemp> u1 = new Vector<MemTemp>();
-									Vector<MemTemp> d1 = new Vector<MemTemp>();
-									u1.add(t1);
-									u1.add(t2);
-									d1.add(t2);
-									newInstr.add(new AsmOPER(
-											"ADD `d0,$254," + Long.toString(br + code.frame.locsSize + 2 * 8), null, d1,
-											null));
-									newInstr.add(new AsmOPER("STO `s0,`s1,0", u1, null, null));
-								}
-							}
-							code.instrs.clear();
-							for (AsmInstr instr : newInstr) {
-								code.instrs.add(instr);
-							}
-							// Replace(code, i2t.get(i));
-						}
-
-					}
-					Code newCode = new Code(code.frame, code.entryLabel, code.exitLabel, code.instrs);
-					code = newCode;
-				}
 			}
 
 		}
