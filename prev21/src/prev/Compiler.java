@@ -1,5 +1,6 @@
 package prev;
 
+import java.io.PrintWriter;
 import java.util.*;
 
 import org.antlr.v4.runtime.*;
@@ -15,8 +16,8 @@ import prev.phase.imclin.*;
 import prev.phase.asmgen.*;
 import prev.phase.livean.*;
 import prev.phase.regall.*;
-import prev.phase.mmix.*;
 import prev.data.mem.*;
+import prev.data.asm.*;
 
 /**
  * The compiler.
@@ -26,7 +27,7 @@ public class Compiler {
 	// COMMAND LINE ARGUMENTS
 
 	/** All valid phases of the compiler. */
-	private static final String phases = "none|lexan|synan|abstr|seman|memory|imcgen|imclin|asmgen|livean|regall|mmix";
+	private static final String phases = "lexan|synan|abstr|seman|memory|imcgen|imclin|asmgen|livean|regall|none";
 
 	/** Values of command line arguments. */
 	private static HashMap<String, String> cmdLine = new HashMap<String, String>();
@@ -194,8 +195,9 @@ public class Compiler {
 					Abstr.tree.accept(new ChunkGenerator(), 0);
 					imclin.log();
 
-					Interpreter interpreter = new Interpreter(ImcLin.dataChunks(), ImcLin.codeChunks());
-					System.out.println("EXIT CODE: " + interpreter.run("_main"));
+					// Interpreter interpreter = new Interpreter(ImcLin.dataChunks(),
+					// ImcLin.codeChunks());
+					// System.out.println("EXIT CODE: " + interpreter.run("_main"));
 				}
 				if (Compiler.cmdLineArgValue("--target-phase").equals("imclin"))
 					break;
@@ -217,23 +219,148 @@ public class Compiler {
 					break;
 
 				// Register allocation.
-				HashMap<MemTemp, Integer> hm;
+				HashMap<MemTemp, Integer> t2r;
 				try (RegAll regall = new RegAll()) {
 					regall.numreg = numofregs;
 					regall.allocate();
-					hm = regall.tempToReg;
+					t2r = regall.tempToReg;
 					regall.log();
 				}
 				if (Compiler.cmdLineArgValue("--target-phase").equals("regall"))
 					break;
 
-				try (Mmix mmixa = new Mmix()) {
-					mmixa.regs = hm;
-					mmixa.finish();
+				// Convert to mmix
+				/*
+				 * try (Mmix mmixa = new Mmix()) { mmixa.regs = hm; mmixa.finish(); }
+				 */
+				String numregss = Integer.toString(numofregs);
+				PrintWriter mmix;
+				try {
+					mmix = new PrintWriter("prev21.mms", "UTF-8");
+				} catch (Exception e) {
+					throw new Report.Error("GRESHKA");
 				}
+				mmix.printf("%-16s\t%s\t%s\n", "", "LOC", "#0");
+				mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "0");
+				mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "0");
+				mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "0");
+				mmix.printf("\n");
+				mmix.printf("%-16s\t%s\t%s\n", "", "LOC", "#10000000");
+				for (int i = 0; i < ImcLin.dataChunks().size(); i++) {
+					mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
+					if (ImcLin.dataChunks().get(i).init == null) {
+						int len = (int) (ImcLin.dataChunks().get(i).size) / 8;
+						for (int j = 0; j < len; j++) {
+							if (j < 1) {
+								String s = ImcLin.dataChunks().get(i).label.name;
+								mmix.printf("%-16s\t%s\t%s\n", s, "OCTA", "0");
+							} else {
+								mmix.printf("%-16s\t%s\t%s\n", "", "OCTA", "0");
+							}
+						}
+					} else {
+						int len = ImcLin.dataChunks().get(i).init.length() - 1;
+						for (int j = 1; j < len; j++) {
+							String ch = Integer.toString((int) ImcLin.dataChunks().get(i).init.charAt(j));
+							String s = ImcLin.dataChunks().get(i).label.name;
+							if (j < 2) {
+								mmix.printf("%-16s\t%s\t%s\n", s, "OCTA", ch);
+							} else {
+								mmix.printf("%-16s\t%s\t%s\n", "", "OCTA", ch);
+							}
+						}
+						mmix.printf("%-16s\t%s\t%s\n", "", "OCTA", "0");
+					}
+				}
+				mmix.printf("\n");
+				// initoutreg
+				mmix.printf("%-16s\t%s\t%s\n", "", "LOC", "#20000000");
+				mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
+				mmix.printf("%-16s\t%s\t%s\n", "OutData", "BYTE", "0");
+				mmix.printf("\n");
+				// PutChar
+				mmix.printf("%-16s\t%s\t%s\n", "", "LOC", "#30000000");
+				mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
+				mmix.printf("%-16s\t%s\t%s\n", "_putChar", "LDO", "$0,$254,8");
+				mmix.printf("%-16s\t%s\t%s\n", "", "LDA", "$1,OutData");
+				mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$255,$1,0");
+				mmix.printf("%-16s\t%s\t%s\n", "", "STB", "$0,$1,0");
+				mmix.printf("%-16s\t%s\t%s\n", "", "ADD", "$1,$1,1");
+				mmix.printf("%-16s\t%s\t%s\n", "", "SETL", "$0,0");
+				mmix.printf("%-16s\t%s\t%s\n", "", "STB", "$0,$1,0");
+				mmix.printf("%-16s\t%s\t%s\n", "", "TRAP", "0,Fputs,StdOut");
+				mmix.printf("%-16s\t%s\t%s\n", "", "POP", numregss + ",0");
+				mmix.printf("\n");
+				mmix.printf("%-16s\t%s\t%s\n", "_exit", "TRAP", "0,Halt,0");
+				mmix.printf("\n");
+				mmix.printf("%-16s\t%s\t%s\n", "_getChar", "TRAP", "0,Halt,0");
+				mmix.printf("\n");
+				for (int i = 0; i < AsmGen.codes.size(); i++) {
+					Code code = AsmGen.codes.get(i);
+					// if (code.frame.label.name.equals("_putString"))
+					// continue;
+					// Prologue
+					long lsize = code.frame.locsSize;
+					String s = code.frame.label.name;
+					long size = code.frame.size;
+					String ent = code.entryLabel.name;
+					String ext = code.exitLabel.name;
+					mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
+					mmix.printf("%-16s\t%s\t%s\n", s, "SETH", "$0," + Math.abs(0xFFFF000000000000L & lsize));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCMH", "$0," + Math.abs(0x0000FFFF00000000L & lsize));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCML", "$0," + Math.abs(0x00000000FFFF0000L & lsize));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCL", "$0," + Math.abs(0x000000000000FFFFL & lsize));
+					mmix.printf("%-16s\t%s\t%s\n", "", "ADD", "$0,$0,8");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$254,$0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$253,$0,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$0,8");
+					mmix.printf("%-16s\t%s\t%s\n", "", "GET", "$1,rJ");
+					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$1,$0,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$253,$254,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SETH", "$0," + Math.abs(0xFFFF000000000000L & size));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCMH", "$0," + Math.abs(0x0000FFFF00000000L & size));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCML", "$0," + Math.abs(0x00000000FFFF0000L & size));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCL", "$0," + Math.abs(0x000000000000FFFFL & size));
+					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$254,$254,$0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "JMP", ent);
+					mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
 
-				if (cmdLine.get("--target-phase").equals("mmix"))
-					break;
+					for (int j = 0; j < code.instrs.size(); j++) {
+						if (!(code.instrs.get(j) instanceof AsmLABEL)) {
+							// System.out.println(((AsmOPER) code.instrs.get(j)).);
+							String[] ss = ((AsmOPER) code.instrs.get(j)).toString(t2r).split(" ");
+							mmix.printf("%-16s\t%s\t%s\n", "", ss[0], ss[1]);
+						} else {
+							mmix.printf("%-16s\t%s\t%s\n", code.instrs.get(j), "ADD", "$0,$0,0");
+						}
+					}
+
+					mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
+					mmix.printf("%-16s\t%s\t%s\n", ext, "OR", "$0,$" + t2r.get(code.frame.RV) + ",0");
+
+					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$1,$253,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$0,$1,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$254,$253,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SETH", "$0," + Math.abs(0xFFFF000000000000L & lsize));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCMH", "$0," + Math.abs(0x0000FFFF00000000L & lsize));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCML", "$0," + Math.abs(0x00000000FFFF0000L & lsize));
+					mmix.printf("%-16s\t%s\t%s\n", "", "INCL", "$0," + Math.abs(0x000000000000FFFFL & lsize));
+					mmix.printf("%-16s\t%s\t%s\n", "", "ADD", "$0,$0,8");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$253,$0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "LDO", "$253,$0,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$0,8");
+					mmix.printf("%-16s\t%s\t%s\n", "", "LDO", "$0,$0,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "PUT", "rJ,$0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "POP", numregss + ",0");
+				}
+				mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
+				mmix.printf("%-16s\t%s\t%s\n", "Main", "SETH", "$254,#3000");
+				mmix.printf("%-16s\t%s\t%s\n", "", "SETH", "$253,#3000");
+				mmix.printf("%-16s\t%s\t%s\n", "", "PUSHJ", "$" + numregss + ",_main");
+				mmix.printf("%-16s\t%s\t%s\n", "", "TRAP", "0,Halt,0");
+				mmix.printf("\n");
+				mmix.close();
+				break;
 
 			}
 
