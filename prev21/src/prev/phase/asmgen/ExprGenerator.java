@@ -13,6 +13,7 @@ import prev.data.asm.*;
 public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 
 	public static Stack<Vector<AsmInstr>> sis = new Stack<Vector<AsmInstr>>();
+	public int numofregss = 8;
 
 	@Override
 	public MemTemp visit(ImcBINOP binOp, Vector<AsmInstr> visArg) {
@@ -117,16 +118,16 @@ public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
 			ins.addAll(vis);
 			Vector<MemTemp> u = new Vector<MemTemp>();
 			u.add(s0);
-			AsmOPER ao = new AsmOPER("STO `s0,$254," + off, u, null, null);
+			AsmOPER ao = new AsmOPER("STO `s0,$253," + off, u, null, null);
 			ins.add(ao);
 			off += 8;
 		}
-		AsmOPER ao = new AsmOPER("PUSHJ $8," + call.label.name, null, null, js);
+		AsmOPER ao = new AsmOPER("PUSHJ $" + numofregss + "," + call.label.name, null, null, js);
 		ins.add(ao);
 		MemTemp d0 = new MemTemp();
 		Vector<MemTemp> d = new Vector<MemTemp>();
 		d.add(d0);
-		AsmOPER ao1 = new AsmOPER("LDO `d0,$254,0", null, d, null);
+		AsmOPER ao1 = new AsmOPER("LDO `d0,$253,0", null, d, null);
 		ins.add(ao1);
 		sis.push(ins);
 		return d0;

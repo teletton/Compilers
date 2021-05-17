@@ -12,11 +12,11 @@ import prev.common.report.*;
  * Machine code generator for statements.
  */
 public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
-
 	@Override
 	public Vector<AsmInstr> visit(ImcCJUMP cjump, Object visArg) {
 		Vector<AsmInstr> vis = new Vector<AsmInstr>();
 		ExprGenerator eg = new ExprGenerator();
+		eg.numofregss = (int) visArg;
 		MemTemp s0 = cjump.cond.accept(eg, vis);
 		Vector<AsmInstr> cvis = eg.sis.pop();
 		Vector<MemLabel> js = new Vector<MemLabel>();
@@ -53,6 +53,7 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 	public Vector<AsmInstr> visit(ImcMOVE move, Object visArg) {
 		Vector<AsmInstr> inn = new Vector<AsmInstr>();
 		ExprGenerator eg = new ExprGenerator();
+		eg.numofregss = (int) visArg;
 		if (move.dst instanceof ImcMEM) {
 			inn.add(new AsmOPER("", null, null, null));
 		}
@@ -61,6 +62,7 @@ public class StmtGenerator implements ImcVisitor<Vector<AsmInstr>, Object> {
 		inn = new Vector<AsmInstr>();
 		Vector<AsmInstr> vis1 = eg.sis.pop();
 		ExprGenerator eg1 = new ExprGenerator();
+		eg1.numofregss = (int) visArg;
 		MemTemp s0 = move.src.accept(eg1, inn);
 		Vector<AsmInstr> vis2 = eg1.sis.pop();
 		Vector<AsmInstr> ins = new Vector<AsmInstr>();

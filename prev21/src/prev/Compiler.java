@@ -204,6 +204,7 @@ public class Compiler {
 
 				// Machine code generation.
 				try (AsmGen asmgen = new AsmGen()) {
+					asmgen.numm = numofregs;
 					asmgen.genAsmCodes();
 					asmgen.log();
 				}
@@ -281,7 +282,7 @@ public class Compiler {
 				// PutChar
 				mmix.printf("%-16s\t%s\t%s\n", "", "LOC", "#30000000");
 				mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
-				mmix.printf("%-16s\t%s\t%s\n", "_putChar", "LDO", "$0,$254,8");
+				mmix.printf("%-16s\t%s\t%s\n", "_putChar", "LDO", "$0,$253,8");
 				mmix.printf("%-16s\t%s\t%s\n", "", "LDA", "$1,OutData");
 				mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$255,$1,0");
 				mmix.printf("%-16s\t%s\t%s\n", "", "STB", "$0,$1,0");
@@ -311,17 +312,17 @@ public class Compiler {
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCML", "$0," + Math.abs(0x00000000FFFF0000L & lsize));
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCL", "$0," + Math.abs(0x000000000000FFFFL & lsize));
 					mmix.printf("%-16s\t%s\t%s\n", "", "ADD", "$0,$0,8");
-					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$254,$0");
-					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$253,$0,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$253,$0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$254,$0,0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$0,8");
 					mmix.printf("%-16s\t%s\t%s\n", "", "GET", "$1,rJ");
 					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$1,$0,0");
-					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$253,$254,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$254,$253,0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "SETH", "$0," + Math.abs(0xFFFF000000000000L & size));
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCMH", "$0," + Math.abs(0x0000FFFF00000000L & size));
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCML", "$0," + Math.abs(0x00000000FFFF0000L & size));
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCL", "$0," + Math.abs(0x000000000000FFFFL & size));
-					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$254,$254,$0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$253,$253,$0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "JMP", ent);
 					mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
 
@@ -338,24 +339,24 @@ public class Compiler {
 					mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
 					mmix.printf("%-16s\t%s\t%s\n", ext, "OR", "$0,$" + t2r.get(code.frame.RV) + ",0");
 
-					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$1,$253,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$1,$254,0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$0,$1,0");
-					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$254,$253,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$253,$254,0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "SETH", "$0," + Math.abs(0xFFFF000000000000L & lsize));
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCMH", "$0," + Math.abs(0x0000FFFF00000000L & lsize));
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCML", "$0," + Math.abs(0x00000000FFFF0000L & lsize));
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCL", "$0," + Math.abs(0x000000000000FFFFL & lsize));
 					mmix.printf("%-16s\t%s\t%s\n", "", "ADD", "$0,$0,8");
-					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$253,$0");
-					mmix.printf("%-16s\t%s\t%s\n", "", "LDO", "$253,$0,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$254,$0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "LDO", "$254,$0,0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "SUB", "$0,$0,8");
 					mmix.printf("%-16s\t%s\t%s\n", "", "LDO", "$0,$0,0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "PUT", "rJ,$0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "POP", numregss + ",0");
 				}
 				mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
-				mmix.printf("%-16s\t%s\t%s\n", "Main", "SETH", "$254,#3000");
-				mmix.printf("%-16s\t%s\t%s\n", "", "SETH", "$253,#3000");
+				mmix.printf("%-16s\t%s\t%s\n", "Main", "SETH", "$253,#3000");
+				mmix.printf("%-16s\t%s\t%s\n", "", "SETH", "$254,#3000");
 				mmix.printf("%-16s\t%s\t%s\n", "", "PUSHJ", "$" + numregss + ",_main");
 				mmix.printf("%-16s\t%s\t%s\n", "", "TRAP", "0,Halt,0");
 				mmix.printf("\n");

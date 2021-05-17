@@ -14,6 +14,7 @@ import prev.phase.imclin.*;
 public class AsmGen extends Phase {
 
 	public static Vector<Code> codes = new Vector<Code>();
+	public int numm = 8;
 
 	public AsmGen() {
 		super("asmgen");
@@ -28,11 +29,10 @@ public class AsmGen extends Phase {
 
 	public Code genAsmCode(LinCodeChunk codeChunk) {
 		Vector<AsmInstr> instrs = new Vector<AsmInstr>();
-		
-		
+
 		for (ImcStmt stmt : codeChunk.stmts()) {
-			//System.out.println(stmt);
-			instrs.addAll(stmt.accept(new StmtGenerator(), 0));
+			// System.out.println(stmt);
+			instrs.addAll(stmt.accept(new StmtGenerator(), numm));
 		}
 		return new Code(codeChunk.frame, codeChunk.entryLabel, codeChunk.exitLabel, instrs);
 	}
