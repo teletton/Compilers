@@ -236,6 +236,10 @@ public class Compiler {
 				 */
 				String numregss = Integer.toString(numofregs);
 				PrintWriter mmix;
+				HashMap<String, Integer> hsml = new HashMap<String, Integer>();
+				for (int i = 0; i < AsmGen.codes.size(); i++) {
+					hsml.put(AsmGen.codes.get(i).frame.label.name, 1);
+				}
 				try {
 					mmix = new PrintWriter("prev21.mms", "UTF-8");
 				} catch (Exception e) {
@@ -292,10 +296,14 @@ public class Compiler {
 				mmix.printf("%-16s\t%s\t%s\n", "", "TRAP", "0,Fputs,StdOut");
 				mmix.printf("%-16s\t%s\t%s\n", "", "POP", numregss + ",0");
 				mmix.printf("\n");
-				mmix.printf("%-16s\t%s\t%s\n", "_exit", "TRAP", "0,Halt,0");
-				mmix.printf("\n");
-				mmix.printf("%-16s\t%s\t%s\n", "_getChar", "TRAP", "0,Halt,0");
-				mmix.printf("\n");
+				if (!hsml.containsKey("_exit")) {
+					mmix.printf("%-16s\t%s\t%s\n", "_exit", "TRAP", "0,Halt,0");
+					mmix.printf("\n");
+				}
+				if (!hsml.containsKey("_getChar")) {
+					mmix.printf("%-16s\t%s\t%s\n", "_getChar", "TRAP", "0,Halt,0");
+					mmix.printf("\n");
+				}
 				for (int i = 0; i < AsmGen.codes.size(); i++) {
 					Code code = AsmGen.codes.get(i);
 					// if (code.frame.label.name.equals("_putString"))
@@ -338,9 +346,8 @@ public class Compiler {
 
 					mmix.printf("%-16s\t%s\t%s\n", "", "GREG", "@");
 					mmix.printf("%-16s\t%s\t%s\n", ext, "OR", "$0,$" + t2r.get(code.frame.RV) + ",0");
-
-					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$1,$254,0");
-					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$0,$1,0");
+					// mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$1,$254,0");
+					mmix.printf("%-16s\t%s\t%s\n", "", "STO", "$0,$254,0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "OR", "$253,$254,0");
 					mmix.printf("%-16s\t%s\t%s\n", "", "SETH", "$0," + Math.abs(0xFFFF000000000000L & lsize));
 					mmix.printf("%-16s\t%s\t%s\n", "", "INCMH", "$0," + Math.abs(0x0000FFFF00000000L & lsize));

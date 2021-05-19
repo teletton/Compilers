@@ -1,5 +1,5 @@
 fun exit():void = none
-fun putChar(c:char):void = none
+fun putChar(c:char):void
 fun getChar():char = (0:char)
 
 typ integer=int

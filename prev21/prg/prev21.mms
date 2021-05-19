@@ -5,34 +5,10 @@
 
                 	LOC	#10000000
                 	GREG	@
-L1              	OCTA	35
-                	OCTA	32
+L1              	OCTA	84
+                	OCTA	85
+                	OCTA	75
                 	OCTA	65
-                	OCTA	76
-                	OCTA	76
-                	OCTA	32
-                	OCTA	83
-                	OCTA	79
-                	OCTA	76
-                	OCTA	85
-                	OCTA	84
-                	OCTA	73
-                	OCTA	79
-                	OCTA	78
-                	OCTA	83
-                	OCTA	32
-                	OCTA	61
-                	OCTA	32
-                	OCTA	0
-                	GREG	@
-L2              	OCTA	83
-                	OCTA	79
-                	OCTA	76
-                	OCTA	85
-                	OCTA	84
-                	OCTA	73
-                	OCTA	79
-                	OCTA	78
                 	OCTA	0
 
                 	LOC	#20000000
@@ -72,9 +48,9 @@ L0              	SETH	$0,0
                 	INCML	$0,0
                 	INCL	$0,32
                 	SUB	$253,$253,$0
-                	JMP	L53
+                	JMP	L27
                 	GREG	@
-L53             	ADD	$0,$0,0
+L27             	ADD	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
@@ -93,17 +69,17 @@ L53             	ADD	$0,$0,0
                 	CMP	$0,$1,$0
                 	ZSZ	$0,$0,1
                 	OR	$0,$0,0
-                	BNZ	$0,L4
-L52             	ADD	$0,$0,0
-                	JMP	L5
-L4              	ADD	$0,$0,0
+                	BNZ	$0,L2
+L26             	ADD	$0,$0,0
+                	JMP	L3
+L2              	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
-                	JMP	L6
-L5              	ADD	$0,$0,0
+                	JMP	L4
+L3              	ADD	$0,$0,0
                 	LDO	$0,$254,0
                 	OR	$2,$0,0
                 	OR	$1,$254,0
@@ -177,18 +153,17 @@ L5              	ADD	$0,$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-L6              	ADD	$0,$0,0
+L4              	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-                	JMP	L54
+                	JMP	L28
                 	GREG	@
-L54             	OR	$0,$0,0
-                	OR	$1,$254,0
-                	STO	$0,$1,0
+L28             	OR	$0,$0,0
+                	STO	$0,$254,0
                 	OR	$253,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
@@ -218,9 +193,9 @@ _putInt         	SETH	$0,0
                 	INCML	$0,0
                 	INCL	$0,32
                 	SUB	$253,$253,$0
-                	JMP	L57
+                	JMP	L31
                 	GREG	@
-L57             	ADD	$0,$0,0
+L31             	ADD	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
@@ -239,10 +214,10 @@ L57             	ADD	$0,$0,0
                 	CMP	$0,$1,$0
                 	ZSN	$0,$0,1
                 	OR	$0,$0,0
-                	BNZ	$0,L7
-L55             	ADD	$0,$0,0
-                	JMP	L8
-L7              	ADD	$0,$0,0
+                	BNZ	$0,L5
+L29             	ADD	$0,$0,0
+                	JMP	L6
+L5              	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -285,14 +260,14 @@ L7              	ADD	$0,$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-                	JMP	L9
-L8              	ADD	$0,$0,0
+                	JMP	L7
+L6              	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
-L9              	ADD	$0,$0,0
+L7              	ADD	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
@@ -311,10 +286,10 @@ L9              	ADD	$0,$0,0
                 	CMP	$0,$1,$0
                 	ZSZ	$0,$0,1
                 	OR	$0,$0,0
-                	BNZ	$0,L10
-L56             	ADD	$0,$0,0
-                	JMP	L11
-L10             	ADD	$0,$0,0
+                	BNZ	$0,L8
+L30             	ADD	$0,$0,0
+                	JMP	L9
+L8              	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -330,8 +305,8 @@ L10             	ADD	$0,$0,0
                 	PUSHJ	$8,_putChar
                 	LDO	$0,$253,0
                 	OR	$0,$0,0
-                	JMP	L12
-L11             	ADD	$0,$0,0
+                	JMP	L10
+L9              	ADD	$0,$0,0
                 	OR	$0,$254,0
                 	OR	$2,$254,0
                 	SETH	$1,0
@@ -348,492 +323,22 @@ L11             	ADD	$0,$0,0
                 	PUSHJ	$8,L0
                 	LDO	$0,$253,0
                 	OR	$0,$0,0
-L12             	ADD	$0,$0,0
+L10             	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-                	JMP	L58
+                	JMP	L32
                 	GREG	@
-L58             	OR	$0,$0,0
-                	OR	$1,$254,0
-                	STO	$0,$1,0
+L32             	OR	$0,$0,0
+                	STO	$0,$254,0
                 	OR	$253,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
-                	ADD	$0,$0,8
-                	SUB	$0,$254,$0
-                	LDO	$254,$0,0
-                	SUB	$0,$0,8
-                	LDO	$0,$0,0
-                	PUT	rJ,$0
-                	POP	8,0
-                	GREG	@
-_getInt         	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	ADD	$0,$0,8
-                	SUB	$0,$253,$0
-                	STO	$254,$0,0
-                	SUB	$0,$0,8
-                	GET	$1,rJ
-                	STO	$1,$0,0
-                	OR	$254,$253,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,48
-                	SUB	$253,$253,$0
-                	JMP	L64
-                	GREG	@
-L64             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,1
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$0,$253,0
-                	PUSHJ	$8,_getChar
-                	LDO	$0,$253,0
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,43
-                	OR	$0,$0,0
-                	CMP	$0,$1,$0
-                	ZSZ	$0,$0,1
-                	OR	$0,$0,0
-                	BNZ	$0,L19
-L59             	ADD	$0,$0,0
-                	JMP	L20
-L19             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,1
-                	OR	$0,$0,0
-                	OR	$0,$2,0
-                	STO	$0,$1,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,48
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	OR	$0,$0,0
-                	JMP	L21
-L20             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,45
-                	OR	$0,$0,0
-                	CMP	$0,$1,$0
-                	ZSZ	$0,$0,1
-                	OR	$0,$0,0
-                	BNZ	$0,L16
-L60             	ADD	$0,$0,0
-                	JMP	L17
-L16             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,1
-                	OR	$0,$0,0
-                	NEG	$0,0,$0
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,48
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	OR	$0,$0,0
-                	JMP	L18
-L17             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,48
-                	OR	$0,$0,0
-                	CMP	$0,$1,$0
-                	ZSN	$0,$0,1
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,57
-                	OR	$0,$0,0
-                	CMP	$0,$1,$0
-                	ZSP	$0,$0,1
-                	OR	$0,$0,0
-                	OR	$0,$2,$0
-                	OR	$0,$0,0
-                	BNZ	$0,L13
-L61             	ADD	$0,$0,0
-                	JMP	L14
-L13             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$0,$253,0
-                	PUSHJ	$8,_exit
-                	LDO	$0,$253,0
-                	OR	$0,$0,0
-                	JMP	L15
-L14             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-L15             	ADD	$0,$0,0
-L18             	ADD	$0,$0,0
-L21             	ADD	$0,$0,0
-L22             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,48
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	CMP	$0,$2,$0
-                	ZSNP	$0,$0,1
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,57
-                	OR	$0,$0,0
-                	CMP	$0,$1,$0
-                	ZSNP	$0,$0,1
-                	OR	$0,$0,0
-                	AND	$0,$2,$0
-                	OR	$0,$0,0
-                	BNZ	$0,L23
-L62             	ADD	$0,$0,0
-                	JMP	L24
-L23             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$3,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,10
-                	OR	$0,$0,0
-                	MUL	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,48
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	ADD	$0,$2,$0
-                	OR	$0,$0,0
-                	STO	$0,$3,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$0,$253,0
-                	PUSHJ	$8,_getChar
-                	LDO	$0,$253,0
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	OR	$0,$0,0
-                	JMP	L22
-L24             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,10
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,256
-                	OR	$0,$0,0
-                	DIV	$0,$1,$0
-                	GET	$0,rR
-                	OR	$0,$0,0
-                	CMP	$0,$2,$0
-                	ZSNZ	$0,$0,1
-                	OR	$0,$0,0
-                	BNZ	$0,L25
-L63             	ADD	$0,$0,0
-                	JMP	L26
-L25             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$0,$253,0
-                	PUSHJ	$8,_exit
-                	LDO	$0,$253,0
-                	OR	$0,$0,0
-                	JMP	L27
-L26             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-L27             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	MUL	$0,$2,$0
-                	OR	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	OR	$2,$254,0
-                	SETH	$1,0
-                	INCMH	$1,0
-                	INCML	$1,0
-                	INCL	$1,16
-                	OR	$1,$1,0
-                	SUB	$1,$2,$1
-                	OR	$1,$1,0
-                	LDO	$1,$1,0
-                	OR	$1,$1,0
-                	MUL	$0,$0,$1
-                	OR	$0,$0,0
-                	OR	$0,$0,0
-                	JMP	L65
-                	GREG	@
-L65             	OR	$0,$0,0
-                	OR	$1,$254,0
-                	STO	$0,$1,0
-                	OR	$253,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
                 	ADD	$0,$0,8
                 	SUB	$0,$254,$0
                 	LDO	$254,$0,0
@@ -858,9 +363,9 @@ _putString      	SETH	$0,0
                 	INCML	$0,0
                 	INCL	$0,40
                 	SUB	$253,$253,$0
-                	JMP	L67
+                	JMP	L34
                 	GREG	@
-L67             	ADD	$0,$0,0
+L34             	ADD	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
@@ -875,7 +380,7 @@ L67             	ADD	$0,$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	STO	$0,$1,0
-L28             	ADD	$0,$0,0
+L11             	ADD	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
@@ -923,10 +428,10 @@ L28             	ADD	$0,$0,0
                 	CMP	$0,$2,$0
                 	ZSNZ	$0,$0,1
                 	OR	$0,$0,0
-                	BNZ	$0,L29
-L66             	ADD	$0,$0,0
-                	JMP	L30
-L29             	ADD	$0,$0,0
+                	BNZ	$0,L12
+L33             	ADD	$0,$0,0
+                	JMP	L13
+L12             	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -1000,8 +505,8 @@ L29             	ADD	$0,$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-                	JMP	L28
-L30             	ADD	$0,$0,0
+                	JMP	L11
+L13             	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -1013,11 +518,10 @@ L30             	ADD	$0,$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-                	JMP	L68
+                	JMP	L35
                 	GREG	@
-L68             	OR	$0,$0,0
-                	OR	$1,$254,0
-                	STO	$0,$1,0
+L35             	OR	$0,$0,0
+                	STO	$0,$254,0
                 	OR	$253,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
@@ -1031,10 +535,10 @@ L68             	OR	$0,$0,0
                 	PUT	rJ,$0
                 	POP	8,0
                 	GREG	@
-L3              	SETH	$0,0
+_combs          	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,40
+                	INCL	$0,16
                 	ADD	$0,$0,8
                 	SUB	$0,$253,$0
                 	STO	$254,$0,0
@@ -1045,11 +549,11 @@ L3              	SETH	$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,72
+                	INCL	$0,64
                 	SUB	$253,$253,$0
-                	JMP	L76
+                	JMP	L39
                 	GREG	@
-L76             	ADD	$0,$0,0
+L39             	ADD	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
@@ -1060,65 +564,28 @@ L76             	ADD	$0,$0,0
                 	OR	$0,$0,0
                 	LDO	$0,$0,0
                 	OR	$2,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
+                	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,8
+                	INCL	$0,16
                 	OR	$0,$0,0
-                	SUB	$0,$1,$0
+                	ADD	$0,$1,$0
                 	OR	$0,$0,0
                 	LDO	$0,$0,0
                 	OR	$0,$0,0
                 	CMP	$0,$2,$0
                 	ZSZ	$0,$0,1
                 	OR	$0,$0,0
-                	BNZ	$0,L49
-L69             	ADD	$0,$0,0
-                	JMP	L50
-L49             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$1,$0,0
-                	LDA	$0,L2
-                	OR	$0,$0,0
-                	STO	$1,$253,0
-                	STO	$0,$253,8
-                	PUSHJ	$8,_putString
-                	LDO	$0,$253,0
-                	OR	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$2,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,10
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,256
-                	OR	$0,$0,0
-                	DIV	$0,$1,$0
-                	GET	$0,rR
-                	OR	$0,$0,0
-                	STO	$2,$253,0
-                	STO	$0,$253,8
-                	PUSHJ	$8,_putChar
-                	LDO	$0,$253,0
-                	OR	$0,$0,0
+                	BNZ	$0,L20
+L36             	ADD	$0,$0,0
+                	JMP	L21
+L20             	ADD	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,24
+                	INCL	$0,8
                 	OR	$0,$0,0
                 	SUB	$0,$1,$0
                 	OR	$1,$0,0
@@ -1128,94 +595,48 @@ L49             	ADD	$0,$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	STO	$0,$1,0
+L14             	ADD	$0,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$2,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,16
+                	OR	$0,$0,0
+                	ADD	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$0,$0,0
+                	CMP	$0,$2,$0
+                	ZSN	$0,$0,1
+                	OR	$0,$0,0
+                	BNZ	$0,L15
 L37             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	CMP	$0,$2,$0
-                	ZSN	$0,$0,1
-                	OR	$0,$0,0
-                	BNZ	$0,L38
-L70             	ADD	$0,$0,0
-                	JMP	L39
-L38             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-L34             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	CMP	$0,$2,$0
-                	ZSN	$0,$0,1
-                	OR	$0,$0,0
-                	BNZ	$0,L35
-L71             	ADD	$0,$0,0
-                	JMP	L36
-L35             	ADD	$0,$0,0
+                	JMP	L16
+L15             	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
                 	OR	$3,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
+                	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,264
+                	INCL	$0,24
                 	OR	$0,$0,0
-                	SUB	$0,$1,$0
+                	ADD	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
                 	OR	$2,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
@@ -1223,7 +644,7 @@ L35             	ADD	$0,$0,0
                 	INCML	$0,0
                 	INCL	$0,8
                 	OR	$0,$0,0
-                	ADD	$0,$1,$0
+                	SUB	$0,$1,$0
                 	OR	$0,$0,0
                 	LDO	$0,$0,0
                 	OR	$1,$0,0
@@ -1237,78 +658,24 @@ L35             	ADD	$0,$0,0
                 	ADD	$0,$2,$0
                 	OR	$0,$0,0
                 	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	CMP	$0,$2,$0
-                	ZSZ	$0,$0,1
-                	OR	$0,$0,0
-                	BNZ	$0,L31
-L72             	ADD	$0,$0,0
-                	JMP	L32
-L31             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,79
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	JMP	L33
-L32             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,46
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-L33             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
                 	OR	$0,$0,0
                 	STO	$3,$253,0
                 	STO	$0,$253,8
+                	PUSHJ	$8,_putInt
+                	LDO	$0,$253,0
+                	OR	$0,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,32
+                	OR	$0,$0,0
+                	STO	$1,$253,0
+                	STO	$0,$253,8
                 	PUSHJ	$8,_putChar
                 	LDO	$0,$253,0
                 	OR	$0,$0,0
@@ -1318,7 +685,7 @@ L33             	ADD	$0,$0,0
                 	INCML	$0,0
                 	INCL	$0,8
                 	OR	$0,$0,0
-                	ADD	$0,$1,$0
+                	SUB	$0,$1,$0
                 	OR	$2,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
@@ -1326,7 +693,7 @@ L33             	ADD	$0,$0,0
                 	INCML	$0,0
                 	INCL	$0,8
                 	OR	$0,$0,0
-                	ADD	$0,$1,$0
+                	SUB	$0,$1,$0
                 	OR	$0,$0,0
                 	LDO	$0,$0,0
                 	OR	$1,$0,0
@@ -1344,8 +711,8 @@ L33             	ADD	$0,$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-                	JMP	L34
-L36             	ADD	$0,$0,0
+                	JMP	L14
+L16             	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -1369,21 +736,108 @@ L36             	ADD	$0,$0,0
                 	PUSHJ	$8,_putChar
                 	LDO	$0,$253,0
                 	OR	$0,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$0,$0,0
+                	OR	$0,$0,0
+                	JMP	L22
+L21             	ADD	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,24
+                	INCL	$0,16
                 	OR	$0,$0,0
                 	SUB	$0,$1,$0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$0,$0,0
+                	STO	$0,$1,0
+L17             	ADD	$0,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,16
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
                 	OR	$2,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
+                	INCL	$0,16
+                	OR	$0,$0,0
+                	ADD	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$0,$0,0
+                	CMP	$0,$2,$0
+                	ZSN	$0,$0,1
+                	OR	$0,$0,0
+                	BNZ	$0,L18
+L38             	ADD	$0,$0,0
+                	JMP	L19
+L18             	ADD	$0,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
                 	INCL	$0,24
                 	OR	$0,$0,0
+                	ADD	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$2,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	ADD	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	MUL	$0,$1,$0
+                	OR	$0,$0,0
+                	ADD	$0,$2,$0
+                	OR	$2,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,16
+                	OR	$0,$0,0
                 	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$0,$0,0
+                	STO	$0,$2,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$4,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	ADD	$0,$1,$0
                 	OR	$0,$0,0
                 	LDO	$0,$0,0
                 	OR	$1,$0,0
@@ -1393,547 +847,75 @@ L36             	ADD	$0,$0,0
                 	INCL	$0,1
                 	OR	$0,$0,0
                 	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	STO	$0,$2,0
+                	OR	$3,$0,0
+                	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,0
+                	INCL	$0,16
                 	OR	$0,$0,0
+                	ADD	$0,$1,$0
                 	OR	$0,$0,0
-                	JMP	L37
-L39             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
+                	LDO	$0,$0,0
                 	OR	$2,$0,0
+                	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,10
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,256
+                	INCL	$0,24
                 	OR	$0,$0,0
-                	DIV	$0,$1,$0
-                	GET	$0,rR
+                	ADD	$0,$1,$0
                 	OR	$0,$0,0
-                	STO	$2,$253,0
-                	STO	$0,$253,8
-                	PUSHJ	$8,_putChar
+                	LDO	$0,$0,0
+                	OR	$0,$0,0
+                	STO	$4,$253,0
+                	STO	$3,$253,8
+                	STO	$2,$253,16
+                	STO	$0,$253,24
+                	PUSHJ	$8,_combs
                 	LDO	$0,$253,0
                 	OR	$0,$0,0
                 	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,40
+                	INCL	$0,16
                 	OR	$0,$0,0
                 	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,1
                 	OR	$0,$0,0
-                	STO	$0,$1,0
+                	OR	$2,$254,0
+                	SETH	$1,0
+                	INCMH	$1,0
+                	INCML	$1,0
+                	INCL	$1,16
+                	OR	$1,$1,0
+                	SUB	$1,$2,$1
+                	OR	$1,$1,0
+                	LDO	$1,$1,0
+                	OR	$2,$1,0
+                	SETH	$1,0
+                	INCMH	$1,0
+                	INCML	$1,0
+                	INCL	$1,1
+                	OR	$1,$1,0
+                	ADD	$1,$2,$1
+                	OR	$1,$1,0
+                	STO	$1,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-                	JMP	L51
-L50             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,40
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
+                	JMP	L17
+L19             	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
-                	STO	$0,$1,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
                 	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-L46             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	CMP	$0,$2,$0
-                	ZSN	$0,$0,1
-                	OR	$0,$0,0
-                	BNZ	$0,L47
-L73             	ADD	$0,$0,0
-                	JMP	L48
-L47             	ADD	$0,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,264
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	MUL	$0,$1,$0
-                	OR	$0,$0,0
-                	ADD	$0,$2,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	STO	$0,$2,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,32
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,1
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-L40             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	CMP	$0,$2,$0
-                	ZSN	$0,$0,1
-                	OR	$0,$0,0
-                	BNZ	$0,L41
-L74             	ADD	$0,$0,0
-                	JMP	L42
-L41             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,32
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$5,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,32
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$4,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,264
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	MUL	$0,$1,$0
-                	OR	$0,$0,0
-                	ADD	$0,$2,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$3,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,264
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	MUL	$0,$1,$0
-                	OR	$0,$0,0
-                	ADD	$0,$2,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	CMP	$0,$3,$0
-                	ZSNZ	$0,$0,1
-                	OR	$0,$0,0
-                	AND	$0,$4,$0
-                	OR	$0,$0,0
-                	STO	$0,$5,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,32
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$5,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,32
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$4,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,264
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	MUL	$0,$1,$0
-                	OR	$0,$0,0
-                	ADD	$0,$2,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$3,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,264
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	MUL	$0,$1,$0
-                	OR	$0,$0,0
-                	ADD	$0,$2,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	SUB	$0,$3,$0
-                	OR	$3,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	SUB	$0,$2,$0
-                	OR	$0,$0,0
-                	CMP	$0,$3,$0
-                	ZSNZ	$0,$0,1
-                	OR	$0,$0,0
-                	AND	$0,$4,$0
-                	OR	$0,$0,0
-                	STO	$0,$5,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,32
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$5,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,32
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$4,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,264
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	MUL	$0,$1,$0
-                	OR	$0,$0,0
-                	ADD	$0,$2,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$3,$0,0
-                	OR	$0,$254,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,264
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	MUL	$0,$1,$0
-                	OR	$0,$0,0
-                	ADD	$0,$2,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	SUB	$0,$3,$0
-                	OR	$3,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	SUB	$0,$2,$0
-                	OR	$0,$0,0
-                	CMP	$0,$3,$0
-                	ZSNZ	$0,$0,1
-                	OR	$0,$0,0
-                	AND	$0,$4,$0
-                	OR	$0,$0,0
-                	STO	$0,$5,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,16
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,1
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	STO	$0,$2,0
+L22             	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -1941,152 +923,14 @@ L41             	ADD	$0,$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
                 	JMP	L40
-L42             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	OR	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,32
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	BNZ	$0,L43
-L75             	ADD	$0,$0,0
-                	JMP	L44
-L43             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,40
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$4,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,40
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$3,$0,0
-                	LDO	$0,$254,0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,1
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	STO	$2,$253,0
-                	STO	$0,$253,8
-                	PUSHJ	$8,L3
-                	LDO	$0,$253,0
-                	OR	$0,$0,0
-                	ADD	$0,$3,$0
-                	OR	$0,$0,0
-                	STO	$0,$4,0
-                	JMP	L45
-L44             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-L45             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,24
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,1
-                	OR	$0,$0,0
-                	ADD	$0,$1,$0
-                	OR	$0,$0,0
-                	STO	$0,$2,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	OR	$0,$0,0
-                	JMP	L46
-L48             	ADD	$0,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	OR	$0,$0,0
-L51             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,40
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,40
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$0,$0,0
-                	LDO	$0,$0,0
-                	OR	$0,$0,0
-                	OR	$0,$0,0
-                	JMP	L77
                 	GREG	@
-L77             	OR	$0,$0,0
-                	OR	$1,$254,0
-                	STO	$0,$1,0
+L40             	OR	$0,$0,0
+                	STO	$0,$254,0
                 	OR	$253,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,40
+                	INCL	$0,16
                 	ADD	$0,$0,8
                 	SUB	$0,$254,$0
                 	LDO	$254,$0,0
@@ -2098,7 +942,7 @@ L77             	OR	$0,$0,0
 _main           	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,264
+                	INCL	$0,272
                 	ADD	$0,$0,8
                 	SUB	$0,$253,$0
                 	STO	$254,$0,0
@@ -2109,45 +953,11 @@ _main           	SETH	$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,296
+                	INCL	$0,320
                 	SUB	$253,$253,$0
-                	JMP	L78
+                	JMP	L42
                 	GREG	@
-L78             	ADD	$0,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$1,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	STO	$0,$1,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,8
-                	OR	$0,$0,0
-                	SUB	$0,$1,$0
-                	OR	$2,$0,0
-                	OR	$1,$254,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,0
-                	OR	$0,$0,0
-                	STO	$1,$253,0
-                	STO	$0,$253,8
-                	PUSHJ	$8,L3
-                	LDO	$0,$253,0
-                	OR	$0,$0,0
-                	STO	$0,$2,0
+L42             	ADD	$0,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
@@ -2164,19 +974,37 @@ L78             	ADD	$0,$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
                 	INCL	$0,0
+                	OR	$2,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,10
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,256
                 	OR	$0,$0,0
-                	OR	$2,$254,0
-                	SETH	$1,0
-                	INCMH	$1,0
-                	INCML	$1,0
-                	INCL	$1,8
-                	OR	$1,$1,0
-                	SUB	$1,$2,$1
-                	OR	$1,$1,0
-                	LDO	$1,$1,0
-                	OR	$1,$1,0
-                	STO	$0,$253,0
-                	STO	$1,$253,8
+                	DIV	$0,$1,$0
+                	GET	$0,rR
+                	OR	$0,$0,0
+                	STO	$2,$253,0
+                	STO	$0,$253,8
+                	PUSHJ	$8,_putChar
+                	LDO	$0,$253,0
+                	OR	$0,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,92
+                	OR	$0,$0,0
+                	STO	$1,$253,0
+                	STO	$0,$253,8
                 	PUSHJ	$8,_putInt
                 	LDO	$0,$253,0
                 	OR	$0,$0,0
@@ -2203,27 +1031,203 @@ L78             	ADD	$0,$0,0
                 	PUSHJ	$8,_putChar
                 	LDO	$0,$253,0
                 	OR	$0,$0,0
+                	OR	$1,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,0
-                	OR	$2,$0,0
-                	SETH	$0,0
-                	INCMH	$0,0
-                	INCML	$0,0
-                	INCL	$0,10
+                	INCL	$0,16
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
                 	OR	$1,$0,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,256
+                	INCL	$0,4
                 	OR	$0,$0,0
-                	DIV	$0,$1,$0
-                	GET	$0,rR
+                	STO	$0,$1,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,65
                 	OR	$0,$0,0
-                	STO	$2,$253,0
+                	STO	$1,$253,0
                 	STO	$0,$253,8
                 	PUSHJ	$8,_putChar
+                	LDO	$0,$253,0
+                	OR	$0,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$0,$0,0
+                	STO	$0,$1,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,65
+                	OR	$0,$0,0
+                	STO	$1,$253,0
+                	STO	$0,$253,8
+                	PUSHJ	$8,_putChar
+                	LDO	$0,$253,0
+                	OR	$0,$0,0
+L23             	ADD	$0,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$2,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,16
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$0,$0,0
+                	CMP	$0,$2,$0
+                	ZSN	$0,$0,1
+                	OR	$0,$0,0
+                	BNZ	$0,L24
+L41             	ADD	$0,$0,0
+                	JMP	L25
+L24             	ADD	$0,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,272
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$2,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	MUL	$0,$1,$0
+                	OR	$0,$0,0
+                	ADD	$0,$2,$0
+                	OR	$2,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$0,$0,0
+                	STO	$0,$2,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$2,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,8
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$1,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,1
+                	OR	$0,$0,0
+                	ADD	$0,$1,$0
+                	OR	$0,$0,0
+                	STO	$0,$2,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$0,$0,0
+                	OR	$0,$0,0
+                	JMP	L23
+L25             	ADD	$0,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$0,$0,0
+                	OR	$0,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$4,$0,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,0
+                	OR	$3,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,16
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	LDO	$0,$0,0
+                	OR	$2,$0,0
+                	OR	$1,$254,0
+                	SETH	$0,0
+                	INCMH	$0,0
+                	INCML	$0,0
+                	INCL	$0,272
+                	OR	$0,$0,0
+                	SUB	$0,$1,$0
+                	OR	$0,$0,0
+                	STO	$4,$253,0
+                	STO	$3,$253,8
+                	STO	$2,$253,16
+                	STO	$0,$253,24
+                	PUSHJ	$8,_combs
                 	LDO	$0,$253,0
                 	OR	$0,$0,0
                 	SETH	$0,0
@@ -2237,16 +1241,15 @@ L78             	ADD	$0,$0,0
                 	INCL	$0,0
                 	OR	$0,$0,0
                 	OR	$0,$0,0
-                	JMP	L79
+                	JMP	L43
                 	GREG	@
-L79             	OR	$0,$0,0
-                	OR	$1,$254,0
-                	STO	$0,$1,0
+L43             	OR	$0,$0,0
+                	STO	$0,$254,0
                 	OR	$253,$254,0
                 	SETH	$0,0
                 	INCMH	$0,0
                 	INCML	$0,0
-                	INCL	$0,264
+                	INCL	$0,272
                 	ADD	$0,$0,8
                 	SUB	$0,$254,$0
                 	LDO	$254,$0,0

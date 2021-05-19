@@ -49,15 +49,12 @@ public class RegAll extends Phase {
 	int[] vis = new int[2002];
 	int numOfTem = 0;
 	int br = 0;
-	// Vector<Integer> deg = new Vector<Integer>();
 	PriorityQueue<Pair> pq = new PriorityQueue<Pair>();
 	Stack<Integer> ss = new Stack<Integer>();
-	// Vector<Integer> colour = new Vector<Integer>();
 	HashMap<Integer, Boolean> hm = new HashMap<Integer, Boolean>();
 	HashSet<Integer> all = new HashSet<Integer>();
 	HashMap<MemTemp, Integer> t2i = new HashMap<MemTemp, Integer>();
 	HashMap<Integer, MemTemp> i2t = new HashMap<Integer, MemTemp>();
-	// Vector<Integer> vis = new Vector<Integer>();
 	HashSet<Integer> spill = new HashSet<Integer>();
 
 	public RegAll() {
@@ -257,17 +254,19 @@ public class RegAll extends Phase {
 						}
 					}
 					// System.out.println();
-					int colo = -10;
 					for (int i = 0; i < numreg; i++) {
 						if (vis1[i] == 0) {
-							colo = i;
+							col[top] = i;
 							break;
 						}
 					}
 					// System.out.println("BROJ + " + top + " BOJA = " + colo);
-					col[top] = colo;
 				}
-
+				for (int i = 0; i < numOfTem; i++) {
+					if (col[i] < 0) {
+						System.out.println("JE POtrebno SPILL");
+					}
+				}
 				for (int i = 0; i < numOfTem; i++) {
 					tempToReg.put(i2t.get(i), col[i]);
 				}
