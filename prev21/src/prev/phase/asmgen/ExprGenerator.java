@@ -11,7 +11,7 @@ import prev.data.asm.*;
  * Machine code generator for expressions.
  */
 public class ExprGenerator implements ImcVisitor<MemTemp, Vector<AsmInstr>> {
-
+//dfdsfsdfs
 	public static Stack<Vector<AsmInstr>> sis = new Stack<Vector<AsmInstr>>();
 	public int numofregss = 8;
 
